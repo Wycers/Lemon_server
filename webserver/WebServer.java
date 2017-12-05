@@ -58,16 +58,23 @@ public class WebServer {
                 String params = request.getParams();
                 String cookie = request.getCookie();
                 
-                System.out.println(path);
+                
+                
+                //处理请求信息
+                Router router = new Router(path, params, cookie); 
+                router.route();
+                String type = router.getType();
+                String newPath = router.getPath();
+                String content = router.getContent();
+
+                System.out.println(newPath);
                 System.out.println(params);
                 System.out.println(cookie);
-                //处理并相应请求信息
-                Router router = new Router(path, params, cookie);
-                
-                //处理并响应请求信息
+                System.out.println(type);
 
+                //响应请求信息
                 OutputStream output = s.getOutputStream();
-                Response response = new Response(output, path);
+                Response response = new Response(output, type, newPath, content);
                 response.response();
 
             } catch (Exception e) {

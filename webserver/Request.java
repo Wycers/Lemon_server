@@ -101,7 +101,7 @@ public class Request {
     public String getParams() {
         if (this.content == null)
             return null;
-        String str = getPath();    
+        String str = getBetween(this.content, " ", " ");    
         
          //url参数键值对
         String strRequestKeyAndValues = "";       
