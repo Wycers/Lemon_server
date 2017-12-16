@@ -49,12 +49,14 @@ public class Response {
                     output.write(str.getBytes());
                 }
             }
-        if (this.type.equals("active")) {
-            str = "HTTP/1.1 200 OK \r\n" + "Content-Type: application/json;charset=utf-8\r\n" + "\r\n" + this.content;
-            System.out.println("23333!" + str);
+        if (this.type.equals("GET")) {
+            str = "HTTP/1.1 200 OK\r\n Content-Type: application/json;charset=utf-8\r\n\r\n" + this.content + "\r\n"; 
             output.write(str.getBytes());
         }
-
+        if (this.type.equals("POST")) {
+            str = this.content;
+            output.write(str.getBytes());
+        }
         output.close();
     }
 }

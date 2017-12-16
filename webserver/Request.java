@@ -3,6 +3,7 @@ package webserver;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.OutputStream;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -36,11 +37,11 @@ public class Request {
         String strAllParam = null;
         String[] arrSplit = null;
      
-        strURL=strURL.trim().toLowerCase();
-        arrSplit=strURL.split("[?]");
+        strURL = strURL.trim().toLowerCase();
+        arrSplit = strURL.split("[?]");
         if(strURL.length() > 1 && arrSplit.length > 1)
             if(arrSplit[1] != null)                  
-                strAllParam=arrSplit[1];
+                strAllParam = arrSplit[1];
         return strAllParam;   
     }
     /**
@@ -49,8 +50,7 @@ public class Request {
      * @param URL  url地址
      * @return  url请求参数部分
      */
-    public static Map<String, String> URLRequest(String URL)
-    {
+    public static Map<String, String> URLRequest(String URL) {
         Map<String, String> mapRequest = new HashMap<String, String>();
         String[] arrSplit=null;
         String strUrlParam=TruncateUrlPage(URL);
@@ -71,45 +71,67 @@ public class Request {
         return mapRequest;   
     }
     InputStream input;
-    private String content = null;
-    public Request(InputStream input) {
+    OutputStream output;
+    private String content = null, action = null;
+    public Request(InputStream input, OutputStream output) {
         this.input = input;
+        this.output = output;
     }
 
     public void prework() throws IOException {
         StringBuffer request = new StringBuffer();
-        byte[] buffer = new byte[2048];
+        byte[] buffer = new byte[4096];
         int i = 0;
 
         try {
             i = input.read(buffer); 
-            //读取内容并存入buffer数组中，并返回读取的的字节数。
         } catch (IOException e) {
             e.printStackTrace();
             i = -1;
         }
-
-        //将buffer数组转换为字符串
         for (int k = 0; k < i; k++) 
             request.append((char) buffer[k]);
         this.content = request.toString();
+
+        this.action = getBetween(this.content, "", " ");
+        if (this.action.equals("POST")) {
+            String str = "HTTP/1.1 200 OK \r\n" + "Content-Type: application/json;charset=utf-8\r\n" + "\r\n";
+            output.write(str.getBytes());
+            i = 0;
+            try {
+                i = input.read(buffer); 
+            } catch (IOException e) {
+                e.printStackTrace();
+                i = -1;
+            }
+            for (int k = 0; k < i; k++) 
+                request.append((char) buffer[k]);
+            this.content = request.toString();
+        }
     }
 
     /*提取文件名*/
     
     //查找
-    public String getParams() {
+    public JsonObject getParams() {
         if (this.content == null)
             return null;
-        String str = getBetween(this.content, " ", " ");    
-        
-         //url参数键值对
-        String strRequestKeyAndValues = "";       
-        Map<String, String> mapRequest = URLRequest(str);
-
+        String res = null;
         Gson gson = new Gson();
-        String json = gson.toJson(mapRequest);
-        return json;
+        if (this.action.equals("GET")) {
+            String str = getBetween(this.content, " ", " ");    
+            
+            String strRequestKeyAndValues = "";       
+            Map<String, String> mapRequest = URLRequest(str);
+            res = gson.toJson(mapRequest);
+        } else {
+            String str = getBetween(this.content, "{", "}");
+            if (str == null)
+                return null;
+            res = "{" + str + "}";
+        }
+        JsonParser parse = new JsonParser();
+        return (JsonObject) parse.parse(res);
     }
     public String getPath() {
         if (this.content == null)

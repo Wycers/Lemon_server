@@ -2,6 +2,7 @@ package webserver;
 
 import java.io.*;
 import java.net.*;
+import java.lang.*;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -20,26 +21,9 @@ public class WebServer {
      * 2、访问127.0.0.1:8080/
      */
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        JsonParser parse = new JsonParser();  //创建json解析器
-        try {
-            JsonObject json=(JsonObject) parse.parse(new FileReader("./webserver/JSONs/test.json"));  //创建jsonObject对象
-            System.out.println("resultcode:"+json.get("resultcode").getAsInt());  //将json数据转为为int型的数据
-            System.out.println("reason:"+json.get("reason").getAsString());     //将json数据转为为String型的数据
-             
-            JsonObject result=json.get("result").getAsJsonObject();
-            JsonObject today=result.get("today").getAsJsonObject();
-            System.out.println("temperature:" + today.get("temperature").getAsString());
-             
-        } catch (JsonIOException e) {
-            e.printStackTrace();
-        } catch (JsonSyntaxException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
         ServerSocket server = null;
+        Router router = new Router(); 
+        Gson gson = new Gson();
         Socket s = null;
         try {
             server = new ServerSocket(8080, 3, InetAddress.getByName("127.0.0.1"));
@@ -50,31 +34,31 @@ public class WebServer {
             try {
                 s = server.accept();
                 InputStream input = s.getInputStream();
+                OutputStream output = s.getOutputStream();
 
                 //接收请求信息
-                Request request = new Request(input);
+                Request request = new Request(input, output);
                 request.prework();
                 String path = request.getPath();
-                String params = request.getParams();
+                JsonObject params = request.getParams();
                 String cookie = request.getCookie();
                 
-                
-                
                 //处理请求信息
-                Router router = new Router(path, params, cookie); 
+                router.setArgs(path, params, cookie); 
                 router.route();
                 String type = router.getType();
                 String newPath = router.getPath();
-                String content = router.getContent();
+                Object content = router.getContent();
 
+                /*
                 System.out.println(newPath);
                 System.out.println(params);
                 System.out.println(cookie);
                 System.out.println(type);
+                */
 
                 //响应请求信息
-                OutputStream output = s.getOutputStream();
-                Response response = new Response(output, type, newPath, content);
+                Response response = new Response(output, type, newPath, gson.toJson(content));
                 response.response();
 
             } catch (Exception e) {

@@ -13,30 +13,42 @@ import com.google.gson.JsonSyntaxException;
 
 // 用于处理请求。
 public class Router {
-    private String params = null, path = null, cookie = null, type = null, content = null;
-    public Router(String path, String params, String cookie) {
+    private String path = null, cookie = null, type = null;
+    private JsonObject params = null;
+    private Gson gson = null;
+    private Object content = null;
+    //workers
+    private UserAction ua = null;
+    Router () {
+        ua = new UserAction();
+        gson = new Gson();
+    }
+    public void setArgs(String path, JsonObject params, String cookie) {
         this.params = params;
         this.path = path;
         this.cookie = cookie;
     }
-    
+
     public void route() {
-        String temp;
-        
         if (this.path.equals("/")) {
             this.type = "static";
             this.path = "/index.html";
         }
         this.type = "static";
-
+        
         if (this.path.equals("/api/tasks")) {
             task[] tasks = new task[1];
-            this.type = "active";
-            Gson gson = new Gson();
+            this.type = "GET";
             tasks[0] = new task();
-            this.content = gson.toJson(tasks);
+            this.content = tasks;
+        }
+        
+    
+        if (this.path.equals("/api/login")) {
+            this.type = "POST";
+            this.content = ua.verify(this.params);
             System.out.println("233");
-        } 
+        }
     }  
 
     public String getType() {
@@ -47,7 +59,7 @@ public class Router {
         return this.path;
     }
 
-    public String getContent() {
+    public Object getContent() {
         return this.content;
     }
 
@@ -79,6 +91,5 @@ public class Router {
             color = "#6f6f6f";
             finished = true;
         }
-        
     }
 }
