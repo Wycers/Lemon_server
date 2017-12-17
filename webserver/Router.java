@@ -21,10 +21,12 @@ public class Router {
     private UserAction ua = null;
     private Token ta = null;
     private MenuAction ma = null;
+    private TaskAction taska = null;
     Router () {
         ua = new UserAction();
         ta = new Token();
         ma = new MenuAction();
+        taska = new TaskAction();
         gson = new Gson();
     }
     public void setArgs(String path, JsonObject params, String cookie) {
@@ -41,17 +43,15 @@ public class Router {
         this.type = "static";
         
         if (this.path.equals("/api/tasks")) {
-            task[] tasks = new task[1];
             this.type = "GET";
-            tasks[0] = new task();
-            this.content = tasks;
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            this.content = taska.getTasks(uid);
         }
-        
     
         if (this.path.equals("/api/login")) {
             this.type = "POST";
             this.content = ua.verify(this.ta, this.params);
-            System.out.println("233");
         }
 
         if (this.path.equals("/api/menu")) {
@@ -89,22 +89,6 @@ public class Router {
             return null;
         return str.substring(indexA + a.length(), indexB);
     }
-    
-    public class task {
-        public int id;
-        public String item, eitem, content, ddl, color;
-        public Boolean finished;
-        public task() {
-            id = 2;
-            item = "线代作业";
-            eitem = "Linear Algebra";
-            content = "Section 3.5 : 1 3 5 7 9";
-            ddl = "2017-11-3";
-            color = "#6f6f6f";
-            finished = true;
-        }
-    }
-
 
     private static String input() {
         String res = null;

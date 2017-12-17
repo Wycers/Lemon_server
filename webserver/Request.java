@@ -94,8 +94,9 @@ public class Request {
         this.content = request.toString();
 
         this.action = getBetween(this.content, "", " ");
+        /*
         if (this.action.equals("POST")) {
-            String str = "HTTP/1.1 200 OK \r\n" + "Content-Type: application/json;charset=utf-8\r\n" + "\r\n";
+            String str = "HTTP/1.1 200 OK \r\n" + "\r\n";
             output.write(str.getBytes());
             i = 0;
             try {
@@ -107,7 +108,7 @@ public class Request {
             for (int k = 0; k < i; k++) 
                 request.append((char) buffer[k]);
             this.content = request.toString();
-        }
+        }*/
     }
 
     /*提取文件名*/

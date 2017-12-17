@@ -67,8 +67,6 @@ public class UserAction {
         Message res = new Message(403, "invalid", null, null);
         String username = params.get("username").getAsString();
         String password = params.get("password").getAsString();
-        System.out.println(username);
-        System.out.println(password);
         for (User p : users) {
             if (p.getUsername().equals(username)) {
                 if (p.getPassword().equals(password))
