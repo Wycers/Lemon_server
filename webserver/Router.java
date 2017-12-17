@@ -19,8 +19,12 @@ public class Router {
     private Object content = null;
     //workers
     private UserAction ua = null;
+    private Token ta = null;
+    private MenuAction ma = null;
     Router () {
         ua = new UserAction();
+        ta = new Token();
+        ma = new MenuAction();
         gson = new Gson();
     }
     public void setArgs(String path, JsonObject params, String cookie) {
@@ -46,8 +50,16 @@ public class Router {
     
         if (this.path.equals("/api/login")) {
             this.type = "POST";
-            this.content = ua.verify(this.params);
+            this.content = ua.verify(this.ta, this.params);
             System.out.println("233");
+        }
+
+        if (this.path.equals("/api/menu")) {
+            this.type = "GET";
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int type = this.ua.getType(uid);
+            this.content = ma.getMenu(type);
         }
     }  
 
@@ -91,5 +103,20 @@ public class Router {
             color = "#6f6f6f";
             finished = true;
         }
+    }
+
+
+    private static String input() {
+        String res = null;
+        try {  
+            FileInputStream in = new FileInputStream("./webserver/Menus/menu_admin.js");
+            byte bs[] = new byte[in.available()];  
+            in.read(bs);
+            res = new String(bs);
+            in.close();  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }
+        return res;
     }
 }

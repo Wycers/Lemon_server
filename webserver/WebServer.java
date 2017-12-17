@@ -33,6 +33,7 @@ public class WebServer {
         while (true) {
             try {
                 s = server.accept();
+
                 InputStream input = s.getInputStream();
                 OutputStream output = s.getOutputStream();
 
@@ -49,13 +50,6 @@ public class WebServer {
                 String type = router.getType();
                 String newPath = router.getPath();
                 Object content = router.getContent();
-
-                /*
-                System.out.println(newPath);
-                System.out.println(params);
-                System.out.println(cookie);
-                System.out.println(type);
-                */
 
                 //响应请求信息
                 Response response = new Response(output, type, newPath, gson.toJson(content));

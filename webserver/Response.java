@@ -28,7 +28,6 @@ public class Response {
         if (this.type.equals("static"))
             if (dir != null && path != null) {
                 File file = new File(dir, path);
-                /*必须添加响应头，否则无法以html格式显示内容*/
                 if (file.exists()) {
                     fis = new FileInputStream(file);
                     if (this.path.endsWith("html"))

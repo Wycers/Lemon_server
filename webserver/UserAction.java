@@ -21,10 +21,7 @@ public class UserAction {
     Gson gson = new Gson();
     UserAction() {
         Gson gs = new Gson();
-        users = gs.fromJson(input(), new TypeToken<ArrayList<User>>(){}.getType());//把JSON格式的字符串转为List  
-        for (User p : users) {  
-            System.out.println("把JSON格式的字符串转为List///  "+p.toString());  
-        }
+        users = gs.fromJson(input(), new TypeToken<ArrayList<User>>(){}.getType());
     }
     public static class User {
         public int uid, type;
@@ -57,16 +54,17 @@ public class UserAction {
     //Particular Things
     public static class Message {
         private int status;
-        private String message;
+        private String message, token;
         private User user = null;
-        Message(int sta_, String msg_, User user_) {
+        Message(int sta_, String msg_, User user_, String token) {
             this.status = sta_;
             this.message = msg_;
             this.user = user_;
+            this.token = token;
         }
     }
-    public Message verify(JsonObject params) {
-        Message res = new Message(403, "invalid", null);
+    public Message verify(Token token, JsonObject params) {
+        Message res = new Message(403, "invalid", null, null);
         String username = params.get("username").getAsString();
         String password = params.get("password").getAsString();
         System.out.println(username);
@@ -74,17 +72,24 @@ public class UserAction {
         for (User p : users) {
             if (p.getUsername().equals(username)) {
                 if (p.getPassword().equals(password))
-                    res = new Message(200, null, p);
+                    res = new Message(200, null, p, token.getToken(p.getUsername(), p.getUid()));
                 break;
             }
         }
         return res;
     }
+    public int getType(int uid) {
+        for (User p : users) {
+            if (p.getUid() == uid) 
+                return p.getType();
+        }
+        return 3;
+    }
     
     
     //----General Things----
     private final static String filePath = "./webserver/JSONs/";
-    private static String input(){
+    private static String input() {
         String res = null;
         try {  
             FileInputStream in = new FileInputStream(filePath + fileName);
