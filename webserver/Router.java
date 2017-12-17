@@ -22,11 +22,15 @@ public class Router {
     private Token ta = null;
     private MenuAction ma = null;
     private TaskAction taska = null;
+    private GridAction ga = null;
+    private FormAction fa = null;
     Router () {
         ua = new UserAction();
         ta = new Token();
         ma = new MenuAction();
         taska = new TaskAction();
+        ga = new GridAction();
+        fa = new FormAction();
         gson = new Gson();
     }
     public void setArgs(String path, JsonObject params, String cookie) {
@@ -60,6 +64,36 @@ public class Router {
             int uid = this.ta.getUser(token);
             int type = this.ua.getType(uid);
             this.content = ma.getMenu(type);
+        }
+        
+        if (this.path.equals("/api/users/grid")) {
+            this.type = "GET";
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int type = this.ua.getType(uid);
+            if (type == 0) {
+                this.content = ga.getGrid("users");
+            }
+        }
+
+        if (this.path.equals("/api/users/form")) {
+            this.type = "GET";
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int type = this.ua.getType(uid);
+            if (type == 0) {
+                this.content = fa.getForms("users");
+            }
+        }
+        if (this.path.equals("/api/users")) {
+            this.type = "GET";
+            /*String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int type = this.ua.getType(uid);
+            if (type == 0) {
+                this.content = fa.getForms("users");
+            }*/
+            this.content = ua.getList(params);
         }
     }  
 

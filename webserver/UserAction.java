@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
+import java.math.*;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -49,6 +50,9 @@ public class UserAction {
         public String getUsername() {
             return this.username;
         }
+        public String getName() {
+            return this.name;
+        }
     }
 
     //Particular Things
@@ -83,6 +87,63 @@ public class UserAction {
         }
         return 3;
     }
+
+    public class item {
+        private int uid, type;
+        private String username, name;
+        item(int uid, int type, String username, String name) {
+            this.uid = uid;
+            this.type = type;
+            this.username = username;
+            this.name = name;
+        }
+    }
+
+    public class Result {
+        int currentPage, lastPage, perPage, total;
+        Object data;
+        Result(int cPage, int lPage, int pPage, int total, Object data) {
+            this.currentPage = cPage;
+            this.lastPage = lPage;
+            this.perPage = pPage;
+            this.total = total;
+            this.data = data;
+        }
+    }
+    private static int min(int a, int b) {
+        return a < b ? a : b;
+    }
+    public Object getList(JsonObject params) {
+        System.out.println(params);
+        
+        int page = params.get("page").getAsInt();
+        int perPage = params.get("perpage").getAsInt();
+        String querys = params.get("query").getAsString();
+        querys = querys.substring(0, querys.length());
+        System.out.println(querys);
+        String username = "", type = "";
+        if (!querys.equals("{}")) {
+            JsonParser parse = new JsonParser();
+            JsonObject query = (JsonObject) parse.parse(querys);
+            username = query.get("username").getAsString();
+            type = query.get("type").getAsString();
+        }
+        
+        ArrayList<item> list = new ArrayList<item>();
+        for (User p : this.users) {
+            if (!username.isEmpty() && !p.getUsername().equals(username))
+                continue;
+            if (!type.isEmpty()) 
+                if (!type.equals("3") && Integer.parseInt(type) != p.getType())
+                    continue;
+            list.add(new item(p.getUid(), p.getType(), p.getUsername(), p.getName()));
+        }
+        int offset = (page - 1) * perPage;
+        ArrayList<item> res = new ArrayList<item>();
+        for (int i = offset; i < min(offset + perPage, list.size()); ++i)
+            res.add(list.get(i));
+        return new Result(page, (int)Math.ceil(list.size() / perPage), perPage, list.size(), res);
+    }
     
     
     //----General Things----
@@ -110,3 +171,5 @@ public class UserAction {
         }
     }  
 }
+
+

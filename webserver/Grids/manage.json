@@ -1,0 +1,59 @@
+{
+    "options": {
+        "sort": "+id",
+        "create": true,
+        "update": true,
+        "delete": true
+    },
+    "filters": {
+        "model": {
+            "username": "",
+            "type": ""
+        },
+        "fields": {
+            "username": {
+                "label": "Username"
+            },
+            "type": {
+                "label": "Type",
+                "type": "select",
+                "choices": [{
+                        "text": "All",
+                        "value": 3
+                    },
+                    {
+                        "text": "Teacher",
+                        "value": 1
+                    },
+                    {
+                        "text": "Student",
+                        "value": 2
+                    }
+                ]
+            }
+        },
+        "rules": {}
+    },
+    "columns": [{
+            "text": "UID",
+            "mid": true,
+            "value": "uid"
+        },
+        {
+            "text": "Username",
+            "mid": true,
+            "value": "username"
+        },
+        {
+            "text": "Type",
+            "mid": true,
+            "value": "type"
+        },
+        {
+            "text": "Nickname",
+            "mid": true,
+            "value": "nickname"
+        }
+
+    ]
+}

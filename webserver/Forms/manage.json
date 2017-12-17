@@ -1,0 +1,29 @@
+{
+    "username": {
+        "label": "Username",
+        "required": true
+    },
+    "nickname": {
+        "label": "Nickname",
+        "required": true
+    },
+    "type": {
+        "label": "Type",
+        "type": "select",
+        "choices": [{
+                "text": "Teacher",
+                "value": 1
+            },
+            {
+                "text": "Student",
+                "value": 2
+            }
+        ],
+        "required": true
+    },
+    "avatar": {
+        "label": "Avatar",
+        "required": true
+    }
+
+}

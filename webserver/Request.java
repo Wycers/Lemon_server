@@ -93,6 +93,9 @@ public class Request {
             request.append((char) buffer[k]);
         this.content = request.toString();
 
+        this.content = this.content.replaceAll("%22", "'");
+        this.content = this.content.replaceAll("%7B", "{");
+        this.content = this.content.replaceAll("%7D", "}");
         this.action = getBetween(this.content, "", " ");
         /*
         if (this.action.equals("POST")) {

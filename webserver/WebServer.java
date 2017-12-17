@@ -51,6 +51,7 @@ public class WebServer {
                 String newPath = router.getPath();
                 Object content = router.getContent();
 
+                System.out.println(path);
                 //响应请求信息
                 Response response = new Response(output, type, newPath, gson.toJson(content));
                 response.response();
