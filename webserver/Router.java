@@ -79,11 +79,12 @@ public class Router {
         if (this.path.equals("/api/users/form")) {
             this.type = "GET";
             String token = params.get("token").getAsString();
+            String toEdit = params.get("id").getAsString();
             int uid = this.ta.getUser(token);
             int type = this.ua.getType(uid);
-            if (type == 0) {
-                this.content = fa.getForms("users");
-            }
+            //if (type == 0) {
+                this.content = fa.getForms(this.ua, "users", toEdit);
+            //}
         }
         if (this.path.equals("/api/users")) {
             this.type = "GET";

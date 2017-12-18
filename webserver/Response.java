@@ -31,11 +31,11 @@ public class Response {
                 if (file.exists()) {
                     fis = new FileInputStream(file);
                     if (this.path.endsWith("html"))
-                        str = "HTTP/1.1 200 OK \r\n" + "Content-Type: text/html\r\n" + "\r\n";
+                        str = "HTTP/2.0 200 OK \r\n" + "Content-Type: text/html\r\n" + "\r\n";
                     if (this.path.endsWith("js"))
-                        str = "HTTP/1.1 200 OK \r\n" + "Content-Type: application/javascript\r\n" + "\r\n";
+                        str = "HTTP/2.0 200 OK \r\n" + "Content-Type: application/javascript\r\n" + "\r\n";
                     if (this.path.endsWith("css"))
-                        str = "HTTP/1.1 200 OK \r\n" + "Content-Type: text/css\r\n" + "\r\n" ;
+                        str = "HTTP/2.0 200 OK \r\n" + "Content-Type: text/css\r\n" + "\r\n" ;
                     output.write(str.getBytes());
                     ch = fis.read(buffer);
                     while (ch != -1) {
@@ -43,13 +43,13 @@ public class Response {
                         ch = fis.read(buffer, 0, BUFFER_SIZE);
                     }
                 } else {
-                    str = "HTTP/1.1 404 File Not Found \r\n" + "Content-Type: text/html\r\n" + "Content-Length: 100\r\n"
+                    str = "HTTP/2.0 404 File Not Found \r\n" + "Content-Type: text/html\r\n" + "Content-Length: 100\r\n"
                             + "\r\n" + "<h1>404 File Not Found!</h1>";
                     output.write(str.getBytes());
                 }
             }
         if (this.type.equals("GET")) {
-            str = "HTTP/1.1 200 OK\r\n Content-Type: application/json;charset=utf-8\r\n\r\n" + this.content + "\r\n"; 
+            str = "HTTP/2.0 200 OK\r\n Content-Type: application/json;charset=utf-8\r\n\r\n" + this.content + "\r\n"; 
             output.write(str.getBytes());
         }
         if (this.type.equals("POST")) {

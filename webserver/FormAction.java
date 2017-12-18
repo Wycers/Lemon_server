@@ -12,20 +12,47 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
+import com.alibaba.fastjson.*;
+
 // 用于处理请求。
 public class FormAction {
     // Basic Things
     Gson gson = new Gson();
-    JsonObject users;
+    JSONObject users;
+
     FormAction() {
-        JsonParser parse = new JsonParser();
-        this.users = (JsonObject) parse.parse(input("manage.json"));
+        //JsonParser parse = new JsonParser();
+        //this.users = (JsonObject) parse.parse(input("manage.json"));
+        JSONObject users = JSON.parseObject(input("manage.json"));
+        /*
+        System.out.println("======before=====");
+        System.out.println("size: " + json.size());
+        System.out.println("val:  " + json.get("model"));
+        json.put("model", 234); // 直接put相同的key
+        System.out.println("======after======");
+        System.out.println("size: " + json.size());
+        System.out.println("val:  " + json.get("model"));
+
+        //Gson gs = new Gson();
+        //System.out.println(gs.toJson(qwq));*/
     }
 
     //Particular Things
-    public JsonObject getForms(String tag) {
-        if (tag == "users") 
-            return this.users;
+    public Object getForms(UserAction ua, String tag, String toEdit) {
+        if (tag.equals("users")) {
+            Gson gs = new Gson();
+            item temp = ua.getUser(Integer.parseInt(toEdit));
+            System.out.println(JSON.toJSON(temp));
+            
+            JSONObject json = JSON.parseObject(input("manage.json"));
+            System.out.println("size: " + json.size());
+            System.out.println("val:  " + json.get("model"));
+            json.put("model", JSON.toJSON(temp)); // 直接put相同的key
+            System.out.println("======after======");
+            System.out.println("size: " + json.size());
+            System.out.println("val:  " + json.get("model"));
+            return json;
+        } 
         return null;  
     }
     

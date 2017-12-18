@@ -24,7 +24,7 @@ public class GridAction {
 
     //Particular Things
     public JsonObject getGrid(String tag) {
-        if (tag == "users") 
+        if (tag.equals("users")) 
             return this.users;
         return null;  
     }

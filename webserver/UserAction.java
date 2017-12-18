@@ -24,36 +24,6 @@ public class UserAction {
         Gson gs = new Gson();
         users = gs.fromJson(input(), new TypeToken<ArrayList<User>>(){}.getType());
     }
-    public static class User {
-        public int uid, type;
-        public String username, name, ename, password;
-        User(int uid_, String username_, String name_, String ename_, String password_, int type_) {
-            this.uid = uid_;
-            this.username = username_;
-            this.name = name_;
-            this.ename = ename_;
-            this.password = password_;
-            this.type = type_;
-        }
-        public String toString () {
-            return String.format("%d", uid);
-        }
-        public int getUid() {
-            return this.uid;
-        }
-        public int getType() {
-            return this.type;
-        }
-        public String getPassword() {
-            return this.password;
-        }
-        public String getUsername() {
-            return this.username;
-        }
-        public String getName() {
-            return this.name;
-        }
-    }
 
     //Particular Things
     public static class Message {
@@ -88,17 +58,6 @@ public class UserAction {
         return 3;
     }
 
-    public class item {
-        private int uid, type;
-        private String username, name;
-        item(int uid, int type, String username, String name) {
-            this.uid = uid;
-            this.type = type;
-            this.username = username;
-            this.name = name;
-        }
-    }
-
     public class Result {
         int currentPage, lastPage, perPage, total;
         Object data;
@@ -112,6 +71,13 @@ public class UserAction {
     }
     private static int min(int a, int b) {
         return a < b ? a : b;
+    }
+    public item getUser(int uid) {
+        for (User p : users) {
+            if (p.getUid() == uid)
+                return new item(p.getUid(), p.getType(), p.getUsername(), p.getName());
+        }
+        return null;
     }
     public Object getList(JsonObject params) {
         System.out.println(params);
