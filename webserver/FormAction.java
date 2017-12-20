@@ -40,14 +40,12 @@ public class FormAction {
     //Particular Things
     public Object getForms(UserAction ua, String tag, String toEdit) {
         if (tag.equals("users:modify")) {
-            Gson gs = new Gson();
             item temp = ua.getUser(Integer.parseInt(toEdit));
             JSONObject json = JSON.parseObject(input("manage.json"));
             json.put("model", JSON.toJSON(temp)); 
             return json;
         } 
         if (tag.equals("users:create")) {
-            Gson gs = new Gson();
             item temp = ua.getUser(Integer.parseInt(toEdit));
             JSONObject json = JSON.parseObject(input("create.json"));
             return json;

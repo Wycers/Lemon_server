@@ -1,6 +1,7 @@
 package webserver;
 
 import java.io.*;
+import java.nio.channels.NetworkChannel;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
@@ -11,27 +12,58 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.alibaba.fastjson.*;
 
 // 用于处理请求。
 public class MenuAction {
     // Basic Things
     Gson gson = new Gson();
-    JsonArray teacher, student, admin;
+    JSONArray teacher, student, admin;
     MenuAction() {
-        JsonParser parse = new JsonParser();
-        this.admin = (JsonArray) parse.parse(input("menu_admin.js"));
+        /*JsonParser parse = new JsonParser();
+        //this.admin = (JsonArray) parse.parse(input("menu_admin.js"));
         this.teacher = (JsonArray) parse.parse(input("menu_teacher.js"));
         this.student = (JsonArray) parse.parse(input("menu_student.js"));
+        */
+        this.student = JSON.parseArray(input("menu_student.json"));
+        this.teacher = JSON.parseArray(input("menu_teacher.json"));
+        this.admin = JSON.parseArray(input("menu_admin.json"));
     }
 
     //Particular Things
-    public JsonArray getMenu(int type) {
+    public JSONArray getMenu(JSONArray domain, int type) {
         if (type == 0) 
             return this.admin;
-        if (type == 1)
-            return this.teacher;
-        if (type == 2)
-            return this.student;
+        if (type == 1) {
+            JSONArray json = this.teacher;
+            for (int i = 0, len = json.size(); i < len; i++) {
+                JSONObject temp = json.getJSONObject(i);
+                String title = temp.getString("title");
+                System.out.println(title);
+                if (title == null) 
+                    continue; 
+                if (title.equals("Domain")) {
+                    temp.put("items", domain);
+                    json.set(i, temp);
+                }
+            }
+            return json;
+        }
+        if (type == 2) {
+            JSONArray json = this.student;
+            for (int i = 0, len = json.size(); i < len; i++) {
+                JSONObject temp = json.getJSONObject(i);
+                String title = temp.getString("title");
+                System.out.println(title);
+                if (title == null) 
+                    continue; 
+                if (title.equals("Domain")) {
+                    temp.put("items", domain);
+                    json.set(i, temp);
+                }
+            }
+            return json;
+        }
         return null;  
     }
     

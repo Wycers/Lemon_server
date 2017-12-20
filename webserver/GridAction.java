@@ -16,16 +16,22 @@ import com.google.gson.JsonSyntaxException;
 public class GridAction {
     // Basic Things
     Gson gson = new Gson();
-    JsonObject users;
+    JsonObject users, domain, domainAdd;
     GridAction() {
         JsonParser parse = new JsonParser();
         this.users = (JsonObject) parse.parse(input("manage.json"));
+        this.domain = (JsonObject) parse.parse(input("domain.json"));
+        this.domainAdd = (JsonObject) parse.parse(input("domain_add.json"));
     }
 
     //Particular Things
     public JsonObject getGrid(String tag) {
         if (tag.equals("users")) 
             return this.users;
+        if (tag.equals("domain"))
+            return this.domain;
+        if (tag.equals("domainAdd"))
+            return this.domainAdd;
         return null;  
     }
     

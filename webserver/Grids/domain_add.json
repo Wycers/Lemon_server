@@ -1,0 +1,20 @@
+{
+  "model": {},
+  "fields": {
+    "uid": {
+      "label": "Username",
+      "required": true
+    },
+    "type": {
+      "label": "Type",
+      "type": "select",
+      "choices": [
+        {"text": "Domain administrator", "value": 10},
+        {"text": "Domain lecturer", "value": 11},
+        {"text": "Domain assistant", "value": 12},
+        {"text": "Domain member", "value": 13}
+      ],
+      "required": true
+    }
+  }
+}

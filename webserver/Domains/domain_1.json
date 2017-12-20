@@ -1,0 +1,19 @@
+{
+    "domainid": 1,
+    "lecturer": [{
+        "name": "李景治",
+        "uid": 233
+    }],
+    "assistant": [{
+        "name": "TA1",
+        "uid": 234
+    }, {
+        "name": "TA2",
+        "uid": 235
+    }],
+    "administrator": [{
+        "name": "ljz",
+        "uid": 233
+    }],
+    "students": []
+}

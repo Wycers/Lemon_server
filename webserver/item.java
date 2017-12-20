@@ -8,6 +8,12 @@ public class item {
         this.username = username;
         this.name = name;
     }
+    item(User p) {
+        this.uid = p.getUid();
+        this.type = p.getType();
+        this.username = p.getUsername();
+        this.name = p.getName();
+    }
     public int getUid() {
         return this.uid;
     }

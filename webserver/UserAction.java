@@ -37,7 +37,7 @@ public class UserAction {
         for (User p : users) {
             if (p.getUsername().equals(username)) {
                 if (p.getPassword().equals(password))
-                    res = new Message(200, null, p, token.getToken(p.getUsername(), p.getUid()));
+                    res = new Message(200, null, new item(p), token.getToken(p.getUsername(), p.getUid()));
                 break;
             }
         }
@@ -69,13 +69,23 @@ public class UserAction {
         return null;
     }
 
-
     public int getType(int uid) {
         for (User p : users) {
             if (p.getUid() == uid) 
                 return p.getType();
         }
         return 3;
+    }
+
+    public Message queryUser(int uid) {
+        Message res = new Message(403, "this user doesn't exist.", null, null);
+        for (User p : users) {
+            if (p.getUid() == uid) {
+                res = new Message(200, null, new item(p), null);
+                break;
+            }
+        }
+        return res;
     }
 
     public class Result {

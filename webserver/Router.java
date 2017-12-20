@@ -24,6 +24,7 @@ public class Router {
     private TaskAction taska = null;
     private GridAction ga = null;
     private FormAction fa = null;
+    private DomainAction da = null;
     Router () {
         ua = new UserAction();
         ta = new Token();
@@ -31,6 +32,7 @@ public class Router {
         taska = new TaskAction();
         ga = new GridAction();
         fa = new FormAction();
+        da = new DomainAction();
         gson = new Gson();
     }
     public void setArgs(String path, JsonObject params, String cookie) {
@@ -55,6 +57,7 @@ public class Router {
     
         if (this.path.equals("/api/login")) {
             this.type = "POST";
+            System.out.println(this.params);
             this.content = ua.verify(this.ta, this.params);
         }
 
@@ -63,7 +66,7 @@ public class Router {
             String token = params.get("token").getAsString();
             int uid = this.ta.getUser(token);
             int type = this.ua.getType(uid);
-            this.content = ma.getMenu(type);
+            this.content = ma.getMenu(this.da.getDomains(uid), type);
         }
         
         if (this.path.equals("/api/users/grid")) {
@@ -115,6 +118,32 @@ public class Router {
             System.out.println(username);
             this.content = ua.addUser(username, type, name);
         }
+        if (this.path.equals("/api/domain/grid")) {
+            this.type = "GET";
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int type = this.ua.getType(uid);
+            this.content = ga.getGrid("domain");
+        }
+        if (this.path.equals("/api/domain/form/add")) {
+            this.type = "GET";
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int type = this.ua.getType(uid);
+            this.content = ga.getGrid("domainAdd");
+        }
+        if (this.path.equals("/api/domain/query")) {
+            this.type = "GET";
+            int uid = params.get("uid").getAsInt();
+            this.content = this.ua.queryUser(uid);
+        }
+        if (this.path.equals("/api/domain/create")) {
+            this.type = "POST";
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int type = this.ua.getType(uid);
+            
+        }
     }  
 
     public String getType() {
@@ -142,19 +171,5 @@ public class Router {
         if (indexB == -1)
             return null;
         return str.substring(indexA + a.length(), indexB);
-    }
-
-    private static String input() {
-        String res = null;
-        try {  
-            FileInputStream in = new FileInputStream("./webserver/Menus/menu_admin.js");
-            byte bs[] = new byte[in.available()];  
-            in.read(bs);
-            res = new String(bs);
-            in.close();  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        }
-        return res;
     }
 }

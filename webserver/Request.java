@@ -129,7 +129,7 @@ public class Request {
             Map<String, String> mapRequest = URLRequest(str);
             res = gson.toJson(mapRequest);
         } else {
-            String str = getBetween(this.content, "{", "}");
+            String str = getBetween(this.content + "\n", "{", "}\n");
             if (str == null)
                 return null;
             res = "{" + str + "}";
