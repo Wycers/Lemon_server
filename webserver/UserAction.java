@@ -3,7 +3,9 @@ package webserver;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.ArrayList;
+import java.util.List;
 import java.math.*;
 
 import com.google.gson.Gson;
@@ -13,6 +15,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+
+import com.alibaba.fastjson.JSON;
 
 // 用于处理请求。
 public class UserAction {
@@ -24,19 +28,8 @@ public class UserAction {
         Gson gs = new Gson();
         users = gs.fromJson(input(), new TypeToken<ArrayList<User>>(){}.getType());
     }
-
+    
     //Particular Things
-    public static class Message {
-        private int status;
-        private String message, token;
-        private User user = null;
-        Message(int sta_, String msg_, User user_, String token) {
-            this.status = sta_;
-            this.message = msg_;
-            this.user = user_;
-            this.token = token;
-        }
-    }
     public Message verify(Token token, JsonObject params) {
         Message res = new Message(403, "invalid", null, null);
         String username = params.get("username").getAsString();
@@ -50,6 +43,33 @@ public class UserAction {
         }
         return res;
     }
+    public Message addUser(String username, int type, String name) {
+        int uid = -1;
+        Random rand = new Random();
+        Boolean flag = true;
+        while (flag) {
+            uid = rand.nextInt(100000);
+            System.out.println(uid);
+            for (User p : users)
+                if (p.getUid() == uid) {
+                    flag = false;
+                    break;
+                }
+            if (!flag) 
+                break;
+        }
+        for (User p : users) {
+            System.out.println(p.getUsername());
+            if (p.getUsername().equals(username))
+                return new Message(403, "repeated", null, null);
+        }
+        this.users.add(new User(uid, username, name, "123456", type));
+        System.out.println(uid);
+        output(gson.toJson(this.users));
+        return null;
+    }
+
+
     public int getType(int uid) {
         for (User p : users) {
             if (p.getUid() == uid) 

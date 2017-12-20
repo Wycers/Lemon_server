@@ -1,0 +1,27 @@
+{
+    "model": {},
+    "fields": {
+        "username": {
+            "label": "Username",
+            "required": true,
+        },
+        "type": {
+            "label": "Type",
+            "type": "select",
+            "choices": [{
+                    "text": "Teacher",
+                    "value": 1
+                },
+                {
+                    "text": "Student",
+                    "value": 2
+                }
+            ],
+            "required": true
+        },
+        "name" : {
+            "label": "Name",
+            "required": true
+        }
+    }
+}

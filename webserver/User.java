@@ -1,13 +1,12 @@
 package webserver;
 
 public class User {
-    public int uid, type;
-    public String username, name, ename, password;
-    User(int uid_, String username_, String name_, String ename_, String password_, int type_) {
+    private int uid, type;
+    private String username, name, password;
+    public User(int uid_, String username_, String name_, String password_, int type_) {
         this.uid = uid_;
         this.username = username_;
         this.name = name_;
-        this.ename = ename_;
         this.password = password_;
         this.type = type_;
     }
@@ -28,5 +27,21 @@ public class User {
     }
     public String getName() {
         return this.name;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    } 
+    public void setType(int type) {
+        this.type = type;
+    }
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 }

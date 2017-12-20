@@ -1,0 +1,30 @@
+{
+    "options": {
+      "sort": "id",
+      "create": true,
+      "update": false,
+      "delete": true
+    },
+    "columns": [
+      {
+        "text": "Type",
+        "mid": true,
+        "value": "type"
+      },
+      {
+        "text": "Uid",
+        "mid": true,
+        "value": "uid"
+      },
+      {
+        "text": "username",
+        "mid": true,
+        "value": "username"
+      },
+      {
+        "text": "nickname",
+        "mid": true,
+        "value": "name"
+      }
+    ]
+  }

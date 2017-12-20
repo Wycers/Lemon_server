@@ -39,18 +39,17 @@ public class FormAction {
 
     //Particular Things
     public Object getForms(UserAction ua, String tag, String toEdit) {
-        if (tag.equals("users")) {
+        if (tag.equals("users:modify")) {
             Gson gs = new Gson();
             item temp = ua.getUser(Integer.parseInt(toEdit));
-            System.out.println(JSON.toJSON(temp));
-            
             JSONObject json = JSON.parseObject(input("manage.json"));
-            System.out.println("size: " + json.size());
-            System.out.println("val:  " + json.get("model"));
-            json.put("model", JSON.toJSON(temp)); // 直接put相同的key
-            System.out.println("======after======");
-            System.out.println("size: " + json.size());
-            System.out.println("val:  " + json.get("model"));
+            json.put("model", JSON.toJSON(temp)); 
+            return json;
+        } 
+        if (tag.equals("users:create")) {
+            Gson gs = new Gson();
+            item temp = ua.getUser(Integer.parseInt(toEdit));
+            JSONObject json = JSON.parseObject(input("create.json"));
             return json;
         } 
         return null;  

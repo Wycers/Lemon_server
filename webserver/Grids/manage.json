@@ -50,9 +50,9 @@
             "value": "type"
         },
         {
-            "text": "Nickname",
+            "text": "Name",
             "mid": true,
-            "value": "nickname"
+            "value": "name"
         }
 
     ]

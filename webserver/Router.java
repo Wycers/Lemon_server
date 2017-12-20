@@ -76,15 +76,26 @@ public class Router {
             }
         }
 
-        if (this.path.equals("/api/users/form")) {
+        if (this.path.equals("/api/users/form/modify")) {
             this.type = "GET";
             String token = params.get("token").getAsString();
             String toEdit = params.get("id").getAsString();
             int uid = this.ta.getUser(token);
             int type = this.ua.getType(uid);
             //if (type == 0) {
-                this.content = fa.getForms(this.ua, "users", toEdit);
+                this.content = fa.getForms(this.ua, "users:modify", toEdit);
             //}
+        }
+
+
+        if (this.path.equals("/api/users/form/create")) {
+            this.type = "GET";
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int type = this.ua.getType(uid);
+            if (type == 0) {
+                this.content = fa.getForms(this.ua, "users:create", "233");
+            }
         }
         if (this.path.equals("/api/users")) {
             this.type = "GET";
@@ -95,6 +106,14 @@ public class Router {
                 this.content = fa.getForms("users");
             }*/
             this.content = ua.getList(params);
+        }
+        if (this.path.equals("/api/users/create")) {
+            this.type = "GET";
+            String name = params.get("name").getAsString();
+            int type = params.get("type").getAsInt();
+            String username = params.get("username").getAsString();
+            System.out.println(username);
+            this.content = ua.addUser(username, type, name);
         }
     }  
 
