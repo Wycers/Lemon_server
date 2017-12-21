@@ -16,17 +16,16 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.*;
 
 // 用于处理请求。
 public class UserAction {
     // Basic Things
-    private final static String fileName = "user.json";
     ArrayList<User> users = null;
     Gson gson = new Gson();
     UserAction() {
         Gson gs = new Gson();
-        users = gs.fromJson(input(), new TypeToken<ArrayList<User>>(){}.getType());
+        users = gs.fromJson(input("user.json"), new TypeToken<ArrayList<User>>(){}.getType());
     }
     
     //Particular Things
@@ -65,7 +64,7 @@ public class UserAction {
         }
         this.users.add(new User(uid, username, name, "123456", type));
         System.out.println(uid);
-        output(gson.toJson(this.users));
+        output(gson.toJson(this.users), "user.json");
         return null;
     }
 
@@ -140,11 +139,22 @@ public class UserAction {
             res.add(list.get(i));
         return new Result(page, (int)Math.ceil(list.size() / perPage), perPage, list.size(), res);
     }
-    
+    public JSONArray getScore(int uid, int domainid) {
+        System.out.println(uid);
+        System.out.println(domainid);
+        JSONObject usr = JSON.parseObject(input(uid + ".json"));
+        System.out.println(usr);
+        usr = usr.getJSONObject("scores");
+        System.out.println(usr);
+        JSONArray res = usr.getJSONArray(String.valueOf(domainid));
+        System.out.println(res);
+        return res;
+    }
+
     
     //----General Things----
     private final static String filePath = "./webserver/JSONs/";
-    private static String input() {
+    private static String input(String fileName) {
         String res = null;
         try {  
             FileInputStream in = new FileInputStream(filePath + fileName);
@@ -157,7 +167,7 @@ public class UserAction {
         }
         return res;
     }
-    public static void output(String str) {  
+    public static void output(String str, String fileName) {  
         try {  
             FileOutputStream out = new FileOutputStream(filePath + fileName);
             out.write(str.getBytes());  

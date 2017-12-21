@@ -10,6 +10,7 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.alibaba.fastjson.*;
 
 // 用于处理请求。
 public class Router {
@@ -34,6 +35,7 @@ public class Router {
         fa = new FormAction();
         da = new DomainAction();
         gson = new Gson();
+        ua.getScore(233, 34089);
     }
     public void setArgs(String path, JsonObject params, String cookie) {
         this.params = params;
@@ -139,10 +141,33 @@ public class Router {
         }
         if (this.path.equals("/api/domain/create")) {
             this.type = "POST";
+            System.out.println(params);
             String token = params.get("token").getAsString();
+            JSONObject params_ = JSON.parseObject(params.toString());
+            String title = params_.getString("title");
+            String etitle = params_.getString("etitle");
+            if (title == null)
+                return;
+            if (etitle == null)
+                return;
             int uid = this.ta.getUser(token);
             int type = this.ua.getType(uid);
-            
+            JSONArray users = params_.getJSONArray("users");
+            this.content = da.addDomain(ua, title, etitle, users);
+        }
+        if (this.path.equals("/api/domainDetail")) {
+            this.type = "GET";
+            System.out.println(params);
+            int did = params.get("id").getAsInt();
+            this.content = da.getDomainDetail(did);
+        } 
+        if (this.path.equals("/api/score")) {
+            this.type = "GET";
+            System.out.println(params);
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int did = params.get("id").getAsInt();
+            this.content = ua.getScore(uid, did);   
         }
     }  
 
