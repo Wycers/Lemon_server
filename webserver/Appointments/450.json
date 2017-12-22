@@ -1,0 +1,24 @@
+{
+  "uid": 450,
+  "timeblocks": [{
+      "blockid": 1,
+      "timeBegin": "20171223 1234",
+      "timeEnd": "20171223 1244",
+      "occupied": {
+        "uid": null,
+        "temp": null
+      },
+      "location": "慧园2栋203"
+    },
+    {
+      "blockid": 2,
+      "timeBegin": "20171224 1235",
+      "timeEnd": "20171224 1245",
+      "occupied": {
+        "uid": null,
+        "temp": null
+      },
+      "location": "慧园2栋203"
+    }
+  ]
+}

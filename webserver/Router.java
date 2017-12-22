@@ -26,6 +26,7 @@ public class Router {
     private GridAction ga = null;
     private FormAction fa = null;
     private DomainAction da = null;
+    private AppointmentAction aa = null;
     Router () {
         ua = new UserAction();
         ta = new Token();
@@ -34,8 +35,8 @@ public class Router {
         ga = new GridAction();
         fa = new FormAction();
         da = new DomainAction();
+        aa = new AppointmentAction();
         gson = new Gson();
-        ua.getScore(233, 34089);
     }
     public void setArgs(String path, JsonObject params, String cookie) {
         this.params = params;
@@ -168,6 +169,29 @@ public class Router {
             int uid = this.ta.getUser(token);
             int did = params.get("id").getAsInt();
             this.content = ua.getScore(uid, did);   
+        }
+        if (this.path.equals("/api/appointment/form")) {
+            this.type = "GET";
+            System.out.println(params);
+            //String token = params.get("token").getAsString();
+            //int uid = this.ta.getUser(token);
+            this.content = fa.getForms(ua, "appointment", null);  
+        }
+        if (this.path.equals("/api/user")) {
+            this.type = "GET";
+            int uid = this.params.get("uid").getAsInt();
+            this.content = ua.getUser(uid);
+        }
+        if (this.path.equals("/api/appointment/query")) {
+            this.type = "GET";
+            int uid = this.params.get("uid").getAsInt();
+            System.out.println("qwq");
+            System.out.println(params);
+            this.content = aa.getAppointment(uid);
+        }
+        if (this.path.equals("/api/appointment")) {
+            this.type = "POST";
+            System.out.println(params);
         }
     }  
 

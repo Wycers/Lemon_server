@@ -80,7 +80,7 @@ public class Request {
 
     public void prework() throws IOException {
         StringBuffer request = new StringBuffer();
-        byte[] buffer = new byte[4096];
+        byte[] buffer = new byte[1024000];
         int i = 0;
 
         try {
@@ -97,9 +97,10 @@ public class Request {
         this.content = this.content.replaceAll("%7B", "{");
         this.content = this.content.replaceAll("%7D", "}");
         this.action = getBetween(this.content, "", " ");
-        /*
+        
+        /*System.out.println(this.content);
         if (this.action.equals("POST")) {
-            String str = "HTTP/1.1 200 OK \r\n" + "\r\n";
+            String str = "HTTP/2.0 200 OK \r\n" + "\r\n";
             output.write(str.getBytes());
             i = 0;
             try {

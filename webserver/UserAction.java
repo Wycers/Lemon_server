@@ -43,24 +43,23 @@ public class UserAction {
         return res;
     }
     public Message addUser(String username, int type, String name) {
+        for (User p : users) {
+            System.out.println(p.getUsername());
+            if (p.getUsername().equals(username))
+                return new Message(403, "repeated", null, null);
+        }
         int uid = -1;
         Random rand = new Random();
         Boolean flag = true;
         while (flag) {
             uid = rand.nextInt(100000);
             System.out.println(uid);
+            flag = false;
             for (User p : users)
                 if (p.getUid() == uid) {
-                    flag = false;
+                    flag = true;
                     break;
                 }
-            if (!flag) 
-                break;
-        }
-        for (User p : users) {
-            System.out.println(p.getUsername());
-            if (p.getUsername().equals(username))
-                return new Message(403, "repeated", null, null);
         }
         this.users.add(new User(uid, username, name, "123456", type));
         System.out.println(uid);
@@ -140,14 +139,9 @@ public class UserAction {
         return new Result(page, (int)Math.ceil(list.size() / perPage), perPage, list.size(), res);
     }
     public JSONArray getScore(int uid, int domainid) {
-        System.out.println(uid);
-        System.out.println(domainid);
         JSONObject usr = JSON.parseObject(input(uid + ".json"));
-        System.out.println(usr);
         usr = usr.getJSONObject("scores");
-        System.out.println(usr);
         JSONArray res = usr.getJSONArray(String.valueOf(domainid));
-        System.out.println(res);
         return res;
     }
 

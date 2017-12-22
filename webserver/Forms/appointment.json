@@ -1,0 +1,23 @@
+{
+    "model": {
+        "type_id": null,
+        "title": null,
+        "body": null
+    },
+    "fields": {
+        "title": {
+            "label": "Title",
+            "required": true
+        },
+        "select": {
+            "type": "select",
+            "label": "Timeblock",
+            "required": true,
+            "choices": []
+        },
+        "body": {
+            "label": "Body",
+            "type": "html"
+        }
+    }
+}

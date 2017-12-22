@@ -46,10 +46,13 @@ public class FormAction {
             return json;
         } 
         if (tag.equals("users:create")) {
-            item temp = ua.getUser(Integer.parseInt(toEdit));
             JSONObject json = JSON.parseObject(input("create.json"));
             return json;
         } 
+        if (tag.equals("appointment")) {
+            JSONObject json = JSON.parseObject(input("appointment.json"));
+            return json;
+        }
         return null;  
     }
     

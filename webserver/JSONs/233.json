@@ -1,10 +1,20 @@
 {
     "uid": 233,
     "scores": {
-        "34089": [{
+        "1": [{
             "score": "8",
             "fullscore": "10",
             "title": "Chapter 1",
+            "note": "QwQ"
+        },{
+            "score": "8",
+            "fullscore": "10",
+            "title": "Chapter 2",
+            "note": "QwQ"
+        },{
+            "score": "8",
+            "fullscore": "10",
+            "title": "Chapter 3",
             "note": "QwQ"
         }]
     }

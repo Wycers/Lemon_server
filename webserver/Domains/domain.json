@@ -1,15 +1,8 @@
 [{
     "content": {
         "href": "/domain/1",
-        "title": "大学物理B",
-        "etitle": "Physics"
-    },
-    "domainId": 1
-}, {
-    "content": {
-        "href": "/domain/34089",
         "title": "测试用",
         "etitle": "test"
     },
-    "domainId": 34089
+    "domainId": 1
 }]
