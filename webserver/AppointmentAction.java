@@ -31,22 +31,49 @@ public class AppointmentAction {
         return JSON.parseObject(input(tid + ".json"));
     }
 
-    public void setAppointment(int blockid, int uid, Boolean tag) {
+    public Message setAppointment(int blockid, Boolean isTemp, int uid, String title, String body) {
+        int tid = bidtotid.get(blockid);
+        if (!isTemp) {
+            JSONObject tmp = JSON.parseObject(input(tid + ".json"));
+            JSONArray tbs = tmp.getJSONArray("timeblocks");
+            for (int i = 0, len = tbs.size(); i < len; ++i) {
+                JSONObject tb = tbs.getJSONObject(i);
+                if (tb.getInteger("blockid") == blockid) {
+                    JSONObject t = tb.getJSONObject("occupied");
+                    t.put("temp", false);
+                    tb.put("occupied", t);
+                    tbs.set(i, tb);
+                    break;
+                }
+            }
+            tmp.put("timeblocks", tbs);
+            output(tmp.toString(), tid + ".json");
+            return new Message(200, "ok", null, null);
+        }
+        
         JSONObject res = new JSONObject();
         res.put("uid", uid);
-        res.put("temp", tag ? true : false);
+        res.put("temp", isTemp);
 
-        int tid = bidtotid.get(blockid);
         JSONObject tmp = JSON.parseObject(input(tid + ".json"));
         JSONArray tbs = tmp.getJSONArray("timeblocks");
         for (int i = 0, len = tbs.size(); i < len; ++i) {
             JSONObject tb = tbs.getJSONObject(i);
             if (tb.getInteger("blockid") == blockid) {
                 tb.put("occupied", res);
+                tbs.set(i, tb);
                 break;
             }
         }
-        System.out.println(res);
+        tmp.put("timeblocks", tbs);
+        output(tmp.toString(), tid + ".json");
+
+
+        JSONObject obj = new JSONObject();
+        obj.put("title", title);
+        obj.put("body", body);
+        output(obj.toString(), "q" + blockid + ".json");
+        return new Message(200, "ok", null, null);
     } 
 
     // ================

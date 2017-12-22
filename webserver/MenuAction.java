@@ -18,7 +18,7 @@ import com.alibaba.fastjson.*;
 public class MenuAction {
     // Basic Things
     Gson gson = new Gson();
-    JSONArray teacher, student, admin;
+    JSONArray teacher, student, admin, appointment;
     MenuAction() {
         /*JsonParser parse = new JsonParser();
         //this.admin = (JsonArray) parse.parse(input("menu_admin.js"));
@@ -28,10 +28,18 @@ public class MenuAction {
         this.student = JSON.parseArray(input("menu_student.json"));
         this.teacher = JSON.parseArray(input("menu_teacher.json"));
         this.admin = JSON.parseArray(input("menu_admin.json"));
+        this.appointment = JSON.parseArray(input("menu_appointment.json"));
     }
 
     //Particular Things
+    public JSONArray getMenu(String type) {
+        if (type == "appointment")
+            return this.appointment;
+        return null;
+    }
     public JSONArray getMenu(JSONArray domain, int type) {
+        if (type == 4) 
+            return this.appointment;
         if (type == 0) 
             return this.admin;
         if (type == 1) {

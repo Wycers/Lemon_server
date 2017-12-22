@@ -1,0 +1,21 @@
+[{
+        "index": 0,
+        "title": "Confirmed appointments",
+        "href": "/appointment/confirmed"
+    },
+    {
+        "index": 1,
+        "title": "In-process appointments",
+        "href": "/appointment/inprocess"
+    },
+    {
+        "index": 2,
+        "title": "Finished appointments",
+        "href": "/appointment/finished"
+    },
+    {
+        "index": 3,
+        "title": "Closed appointments",
+        "href": "/appointment/closed"
+    }
+]

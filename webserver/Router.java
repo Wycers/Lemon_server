@@ -189,9 +189,29 @@ public class Router {
             System.out.println(params);
             this.content = aa.getAppointment(uid);
         }
-        if (this.path.equals("/api/appointment")) {
+        if (this.path.equals("/api/appointment/try")) {
             this.type = "POST";
             System.out.println(params);
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int blockid = this.params.get("select").getAsInt();
+            String body = this.params.get("body").getAsString();
+            String title = this.params.get("title").getAsString();
+            this.content = aa.setAppointment(blockid, true, uid, title, body);
+        }
+        if (this.path.equals("/api/appointment/confirm")) {
+            this.type = "POST";
+            int tid = this.params.get("select").getAsInt();
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int blockid = this.params.get("select").getAsInt();
+            this.content = aa.setAppointment(blockid, false, 0, "", "");
+        }
+        if (this.path.equals("/api/appointment/menu")) {
+            this.type = "GET";
+            this.content = ma.getMenu("appointment");
+            System.out.println("233333");
+            System.out.println(this.content);
         }
     }  
 
