@@ -145,6 +145,18 @@ public class UserAction {
         return res;
     }
 
+    public JSONObject getUserInfo(int uid) {
+        JSONObject res = new JSONObject(); 
+        for (User p : users) 
+            if (p.getUid() == uid) {
+                res.put("uid", uid);
+                res.put("avatar", p.getAvatar());
+                res.put("name", p.getName());
+                return res;
+            }
+        return null;
+    }
+
     
     //----General Things----
     private final static String filePath = "./webserver/JSONs/";

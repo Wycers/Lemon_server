@@ -36,6 +36,8 @@ public class Response {
                         str = "HTTP/2.0 200 OK \r\n" + "Content-Type: application/javascript\r\n" + "\r\n";
                     if (this.path.endsWith("css"))
                         str = "HTTP/2.0 200 OK \r\n" + "Content-Type: text/css\r\n" + "\r\n" ;
+                    if (this.path.endsWith("jpg"))
+                        str = "HTTP/2.0 200 OK \r\n\r\n";
                     output.write(str.getBytes());
                     ch = fis.read(buffer);
                     while (ch != -1) {

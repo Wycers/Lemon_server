@@ -7,74 +7,102 @@ import com.alibaba.fastjson.*;
 
 public class AppointmentAction {
     HashMap<Integer, Integer> bidtotid = new HashMap<Integer, Integer>();
-
-    public void work(int tid) {
-        JSONObject tmp = JSON.parseObject(input(tid + ".json"));
-        JSONArray tbs = tmp.getJSONArray("timeblocks");
-        for (int i = 0, len = tbs.size(); i < len; ++i) {
-            JSONObject tb = tbs.getJSONObject(i);
-            bidtotid.put(tb.getInteger("blockid"), tid);
-        }
-    }
+    HashMap<Integer, JSONArray> uidtoapp = new HashMap<>();
+    JSONArray apps = null;
+    JSONArray status = new JSONArray();
 
     public AppointmentAction() {
-        work(450);
-    }
-    public JSONObject getAppointment(int tid) {
-        File file = new File(filePath + tid + ".json");
-        if (!file.exists()) {
-            JSONObject tmp = JSON.parseObject(input("default.json"));
-            tmp.put("uid", tid);
-            return tmp;
-        }
-        System.out.println(JSON.parseObject(input(tid + ".json")));
-        return JSON.parseObject(input(tid + ".json"));
-    }
+    
+        JSONObject sta = new JSONObject();
+        sta.put("status", 0);
+        sta.put("editable", false);
+        sta.put("deletable", false);
+        sta.put("cancelable", true);
+        status.add(sta);
 
-    public Message setAppointment(int blockid, Boolean isTemp, int uid, String title, String body) {
-        int tid = bidtotid.get(blockid);
-        if (!isTemp) {
-            JSONObject tmp = JSON.parseObject(input(tid + ".json"));
-            JSONArray tbs = tmp.getJSONArray("timeblocks");
-            for (int i = 0, len = tbs.size(); i < len; ++i) {
-                JSONObject tb = tbs.getJSONObject(i);
-                if (tb.getInteger("blockid") == blockid) {
-                    JSONObject t = tb.getJSONObject("occupied");
-                    t.put("temp", false);
-                    tb.put("occupied", t);
-                    tbs.set(i, tb);
-                    break;
-                }
-            }
-            tmp.put("timeblocks", tbs);
-            output(tmp.toString(), tid + ".json");
-            return new Message(200, "ok", null, null);
-        }
+        sta = new JSONObject();
+        sta.put("status", 1);
+        sta.put("editable", true);
+        sta.put("deletable", false);
+        sta.put("cancelable", true);
+        status.add(sta);
+
+        sta = new JSONObject();
+        sta.put("status", 2);
+        sta.put("editable", false);
+        sta.put("deletable", true);
+        sta.put("cancelable", false);
+        status.add(sta);
+
+        sta = new JSONObject();
+        sta.put("status", 3);
+        sta.put("editable", false);
+        sta.put("deletable", true);
+        sta.put("cancelable", false);
+        status.add(sta);
         
-        JSONObject res = new JSONObject();
-        res.put("uid", uid);
-        res.put("temp", isTemp);
+        apps = JSON.parseArray(input("appointments.json"));
+        for (int i = 0, len = apps.size(); i < len; ++i) {
+            JSONObject p = apps.getJSONObject(i);
 
-        JSONObject tmp = JSON.parseObject(input(tid + ".json"));
-        JSONArray tbs = tmp.getJSONArray("timeblocks");
-        for (int i = 0, len = tbs.size(); i < len; ++i) {
-            JSONObject tb = tbs.getJSONObject(i);
-            if (tb.getInteger("blockid") == blockid) {
-                tb.put("occupied", res);
-                tbs.set(i, tb);
-                break;
-            }
+            JSONArray tmp = new JSONArray();
+            tmp = uidtoapp.get(p.getInteger("suid"));
+            if (tmp == null)
+                tmp = new JSONArray();
+            tmp.add(p);
+            uidtoapp.put(p.getInteger("suid"), tmp);
+
+            tmp = uidtoapp.get(p.getInteger("tuid"));
+            if (tmp == null)
+                tmp = new JSONArray();
+            tmp.add(p);
+            uidtoapp.put(p.getInteger("tuid"), tmp);
         }
-        tmp.put("timeblocks", tbs);
-        output(tmp.toString(), tid + ".json");
+    }
 
+    public JSONArray getAppointment(UserAction ua, BlockAction ba, int uid) {
+        JSONArray origin = uidtoapp.get(uid);
+        if (origin == null)
+            return null;
+        JSONArray res = new JSONArray();
+        for (int i = 0, len = res.size(); i < len; ++i) {
+            JSONObject now = res.getJSONObject(i);
+            JSONObject tmp = status.getJSONObject(now.getInteger("status"));
+            tmp.put("s", ua.getUserInfo(now.getInteger("suid")));
+            tmp.put("t", ua.getUserInfo(now.getInteger("tuid")));
+            tmp.put("b", ba.getBlockInfo(now.getInteger("bid")));
+            tmp.put("aid", now.getInteger("aid"));
+            res.add(tmp);
+        }
+        System.out.println(res);
+        return res;
+    }
 
+    public Message createAppointment(int tid, int uid, int qid, int blockid) {
         JSONObject obj = new JSONObject();
-        obj.put("title", title);
-        obj.put("body", body);
-        output(obj.toString(), "q" + blockid + ".json");
+        obj.put("status", 0);
+        obj.put("aid", apps.size() + 1);
+        obj.put("suid", uid);
+        obj.put("tuid", tid);
+        obj.put("bid", blockid);
+        apps.add(obj);
+
+        JSONArray temp = uidtoapp.get(uid);
+        if (temp == null)
+            temp = new JSONArray();
+        temp.add(obj);
+        uidtoapp.put(uid, temp);
+
+        temp = uidtoapp.get(tid);
+        if (temp == null)
+            temp = new JSONArray();
+        temp.add(obj);
+        uidtoapp.put(tid, temp);
+
+        output(apps.toString(), "appointments.json");
         return new Message(200, "ok", null, null);
     } 
+    
 
     // ================
     private final static String filePath = "./webserver/Appointments/";

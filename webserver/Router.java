@@ -27,6 +27,8 @@ public class Router {
     private FormAction fa = null;
     private DomainAction da = null;
     private AppointmentAction aa = null;
+    private BlockAction ba = null;
+    private QuestionAction qa = null;
     Router () {
         ua = new UserAction();
         ta = new Token();
@@ -36,6 +38,8 @@ public class Router {
         fa = new FormAction();
         da = new DomainAction();
         aa = new AppointmentAction();
+        ba = new BlockAction();
+        qa = new QuestionAction();
         gson = new Gson();
     }
     public void setArgs(String path, JsonObject params, String cookie) {
@@ -49,7 +53,9 @@ public class Router {
             this.type = "static";
             this.path = "/index.html";
         }
-        this.type = "static";
+        if (this.path.startsWith("/static")) {
+            this.type = "static";
+        }
         
         if (this.path.equals("/api/tasks")) {
             this.type = "GET";
@@ -182,14 +188,14 @@ public class Router {
             int uid = this.params.get("uid").getAsInt();
             this.content = ua.getUser(uid);
         }
-        if (this.path.equals("/api/appointment/query")) {
+        if (this.path.equals("/api/timeblock/query")) {
             this.type = "GET";
             int uid = this.params.get("uid").getAsInt();
-            System.out.println("qwq");
-            System.out.println(params);
-            this.content = aa.getAppointment(uid);
+            System.out.println(uid);
+            System.out.println(ba.getTimeblock(uid));
+            this.content = ba.getTimeblock(uid);
         }
-        if (this.path.equals("/api/appointment/try")) {
+        if (this.path.equals("/api/appointment/create")) {
             this.type = "POST";
             System.out.println(params);
             String token = params.get("token").getAsString();
@@ -197,21 +203,15 @@ public class Router {
             int blockid = this.params.get("select").getAsInt();
             String body = this.params.get("body").getAsString();
             String title = this.params.get("title").getAsString();
-            this.content = aa.setAppointment(blockid, true, uid, title, body);
-        }
-        if (this.path.equals("/api/appointment/confirm")) {
-            this.type = "POST";
-            int tid = this.params.get("select").getAsInt();
-            String token = params.get("token").getAsString();
-            int uid = this.ta.getUser(token);
-            int blockid = this.params.get("select").getAsInt();
-            this.content = aa.setAppointment(blockid, false, 0, "", "");
+
+            ba.setTimeblock(blockid, uid);
+            int qid = qa.createQuestion(title, body);
+            int tid = ba.queryUid(blockid);
+            this.content = aa.createAppointment(tid, uid, qid, blockid);
         }
         if (this.path.equals("/api/appointment/menu")) {
             this.type = "GET";
             this.content = ma.getMenu("appointment");
-            System.out.println("233333");
-            System.out.println(this.content);
         }
     }  
 
