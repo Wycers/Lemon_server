@@ -200,6 +200,12 @@ public class Router {
             System.out.println(params);
             String token = params.get("token").getAsString();
             int uid = this.ta.getUser(token);
+            try {   
+                int blockid = this.params.get("select").getAsInt();
+            } catch(Exception e) {
+                this.content = new Message(403, "invalid timeblock", null, null);
+                return;
+            }
             int blockid = this.params.get("select").getAsInt();
             String body = this.params.get("body").getAsString();
             String title = this.params.get("title").getAsString();
@@ -212,6 +218,43 @@ public class Router {
         if (this.path.equals("/api/appointment/menu")) {
             this.type = "GET";
             this.content = ma.getMenu("appointment");
+        }
+        if (this.path.equals("/api/appointment/query")) {
+            this.type = "GET";
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            this.content = aa.getAppointment(ua, ba, uid);
+        }
+        if (this.path.equals("/api/appointment/cancel")) {
+            this.type = "GET";
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int aid = params.get("aid").getAsInt();
+            this.content = aa.cancelAppointment(ba, aid);
+        }
+        if (this.path.equals("/api/appointment/confirm")) {
+            this.type = "GET";
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int aid = params.get("aid").getAsInt();
+            this.content = aa.confirmAppointment(aid);
+        }
+        if (this.path.equals("/api/appointment/cancel/hint")) {
+            this.type = "GET";
+            this.content = "你确定要取消这个预约吗";
+            System.out.println(this.params);
+        }
+        if (this.path.equals("/api/appointment/del")) {
+            this.type = "GET";
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int aid = params.get("aid").getAsInt();
+            this.content = aa.delAppointment(aid);
+        }
+        if (this.path.equals("/api/appointment/del/hint")) {
+            this.type = "GET";
+            this.content = "你确定要删除这个预约吗";
+            System.out.println(this.params);
         }
     }  
 

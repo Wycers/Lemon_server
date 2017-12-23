@@ -39,8 +39,24 @@ public class BlockAction {
         }
         return null;
     }
+
+    public void setTimeblockFree(int blockid) {
+        int tid = queryUid(blockid);
+        JSONObject res = new JSONObject();
+        JSONArray tbs = JSON.parseArray(input(tid + ".json"));
+        for (int i = 0, len = tbs.size(); i < len; ++i) {
+            JSONObject tb = tbs.getJSONObject(i);
+            if (tb.getInteger("blockid") == blockid) {
+                tb.remove("occupied");
+                tbs.set(i, tb);
+                break;
+            }
+        }
+        System.out.println(tbs);
+        output(tbs.toString(), tid + ".json");
+    } 
  
-    public Message setTimeblock(int blockid, int occupant) {
+    public void setTimeblock(int blockid, int occupant) {
         int tid = queryUid(blockid);
         JSONObject res = new JSONObject();
         JSONArray tbs = JSON.parseArray(input(tid + ".json"));
@@ -53,7 +69,6 @@ public class BlockAction {
             }
         }
         output(tbs.toString(), tid + ".json");
-        return new Message(200, "ok", null, null);
     } 
 
     public int queryUid(int blockid) {

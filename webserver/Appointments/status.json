@@ -1,0 +1,25 @@
+[{
+    "cancelable": true,
+    "editable": false,
+    "deletable": false,
+    "confirmable": false,
+    "status": 0
+}, {
+    "cancelable": true,
+    "editable": true,
+    "deletable": false,
+    "confirmable": true,
+    "status": 1
+}, {
+    "cancelable": false,
+    "editable": false,
+    "deletable": true,
+    "confirmable": false,
+    "status": 2
+}, {
+    "cancelable": false,
+    "editable": false,
+    "deletable": true,
+    "confirmable": false,
+    "status": 3
+}]

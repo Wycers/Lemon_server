@@ -10,7 +10,8 @@
     "type": 1,
     "username": "teacher",
     "name": "老师",
-    "password": "teacher"
+    "password": "teacher",
+    "avatar": "/static/1.jpg"
 }, {
     "uid": 233,
     "type": 2,
