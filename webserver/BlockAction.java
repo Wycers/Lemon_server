@@ -17,7 +17,6 @@ public class BlockAction {
 
     public BlockAction() {
         work(450);
-        System.out.println(getTimeblock(450));
     }
 
 
@@ -52,7 +51,6 @@ public class BlockAction {
                 break;
             }
         }
-        System.out.println(tbs);
         output(tbs.toString(), tid + ".json");
     } 
  

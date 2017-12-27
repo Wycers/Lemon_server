@@ -89,8 +89,8 @@ public class Request {
             e.printStackTrace();
             i = -1;
         }
-        for (int k = 0; k < i; k++) 
-            request.append((char) buffer[k]);
+        if (0 < i)
+            request.append(new String(buffer, 0, i, "UTF-8"));
         this.content = request.toString();
 
         this.content = this.content.replaceAll("%22", "'");

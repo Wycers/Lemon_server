@@ -41,6 +41,7 @@ public class Router {
         ba = new BlockAction();
         qa = new QuestionAction();
         gson = new Gson();
+        System.out.println(da.getDomain(1));
     }
     public void setArgs(String path, JsonObject params, String cookie) {
         this.params = params;
@@ -61,7 +62,7 @@ public class Router {
             this.type = "GET";
             String token = params.get("token").getAsString();
             int uid = this.ta.getUser(token);
-            this.content = taska.getTasks(uid);
+            this.content = taska.getTasks(da, uid);
         }
     
         if (this.path.equals("/api/login")) {
@@ -134,6 +135,15 @@ public class Router {
             int type = this.ua.getType(uid);
             this.content = ga.getGrid("domain");
         }
+        if (this.path.equals("/api/domain/get")) {
+            this.type = "GET";
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int type = this.ua.getType(uid);
+            System.out.println(params);
+            int did = params.get("domainid").getAsInt();
+            this.content = da.getDomain(did);
+        }
         if (this.path.equals("/api/domain/form/add")) {
             this.type = "GET";
             String token = params.get("token").getAsString();
@@ -148,7 +158,6 @@ public class Router {
         }
         if (this.path.equals("/api/domain/create")) {
             this.type = "POST";
-            System.out.println(params);
             String token = params.get("token").getAsString();
             JSONObject params_ = JSON.parseObject(params.toString());
             String title = params_.getString("title");
@@ -160,7 +169,23 @@ public class Router {
             int uid = this.ta.getUser(token);
             int type = this.ua.getType(uid);
             JSONArray users = params_.getJSONArray("users");
-            this.content = da.addDomain(ua, title, etitle, users);
+            this.content = da.addDomain(title, etitle, users);
+        }
+        if (this.path.equals("/api/domain/edit")) {
+            this.type = "POST";
+            String token = params.get("token").getAsString();
+            JSONObject params_ = JSON.parseObject(params.toString());
+            String title = params_.getString("title");
+            String etitle = params_.getString("etitle");
+            if (title == null)
+                return;
+            if (etitle == null)
+                return;
+            int uid = this.ta.getUser(token);
+            int type = this.ua.getType(uid);
+            int domainid = params_.getInteger("domainid");
+            JSONArray users = params_.getJSONArray("users");
+            this.content = da.editDomain(domainid, title, etitle, users);
         }
         if (this.path.equals("/api/domainDetail")) {
             this.type = "GET";
@@ -255,6 +280,13 @@ public class Router {
             this.type = "GET";
             this.content = "你确定要删除这个预约吗";
             System.out.println(this.params);
+        }
+        if (this.path.equals("/api/question/get")) {
+            this.type = "GET";
+            String token = params.get("token").getAsString();
+            int uid = this.ta.getUser(token);
+            int qid = params.get("qid").getAsInt();
+            this.content = qa.getQuestion(qid);
         }
     }  
 

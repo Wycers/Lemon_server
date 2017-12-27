@@ -13,56 +13,44 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import com.alibaba.fastjson.*;
+
 // 用于处理请求。
 public class TaskAction {
     // Basic Things
-    private final static String fileName = "task.json";
-    ArrayList<Tasks> tasks = null;
+    ArrayList<Task> tasks = null;
     Gson gson = new Gson();
-    public class Task {
-        public int id;
-        public String item, eitem, content, ddl, color;
-        public Boolean finished;
-        public Task() {
-            id = 2;
-            item = "线代作业";
-            eitem = "Linear Algebra";
-            content = "Section 3.5 : 1 3 5 7 9";
-            ddl = "2017-11-3";
-            color = "#6f6f6f";
-            finished = true;
-        }
-    }
-    public class Tasks {
-        public int uid;
-        private ArrayList<Task> tasks = null;
-        public int getUid() {
-            return this.uid;
-        }
-        public ArrayList<Task> getTasks() {
-            return this.tasks;
-        }
-    }
     TaskAction() {
-        Gson gs = new Gson();
-        tasks = gs.fromJson(input(), new TypeToken<ArrayList<Tasks>>(){}.getType());
-        for (Tasks t : tasks)
-            System.out.println(t.uid);
+        tasks = new ArrayList<Task>();
     }
 
     //Particular Things
-    public ArrayList<Task> getTasks(int uid) {
-        for (Tasks task : tasks) {
-            if (task.getUid() == uid) {
-                return task.getTasks();
+    public Message addTask(int domainid, Task task) {
+        JSONArray now = JSON.parseArray(input(domainid + ".json"));
+        now.add(task);
+        output(now.toString(), domainid + ".json");
+        return new Message(200, null, null, null);
+    }
+    public JSONArray getTask(int domainid) {
+        return JSON.parseArray(input(domainid + ".json"));
+    }
+    public JSONArray getTasks(DomainAction da, int uid) {
+        JSONArray tmp = da.getDomains(uid);
+        JSONArray res = new JSONArray();
+        if (tmp == null)
+            return res;
+            for (int i = 0, len = tmp.size() - 1; i < len; ++ i) {
+                JSONObject now = tmp.getJSONObject(i);
+                JSONArray temp = getTask(now.getInteger("id"));
+                for (int j = 0, len2 = temp.size(); j < len2; ++j) 
+                    res.add(temp.getJSONObject(j));
             }
-        }
-        return null;
+        return res;
     }
     
     //----General Things----
-    private final static String filePath = "./webserver/JSONs/";
-    private static String input() {
+    private final static String filePath = "./webserver/Tasks/";
+    private static String input(String fileName) {
         String res = null;
         try {  
             FileInputStream in = new FileInputStream(filePath + fileName);
@@ -75,7 +63,7 @@ public class TaskAction {
         }
         return res;
     }
-    public static void output(String str) {  
+    public static void output(String str, String fileName) {  
         try {  
             FileOutputStream out = new FileOutputStream(filePath + fileName);
             out.write(str.getBytes());  

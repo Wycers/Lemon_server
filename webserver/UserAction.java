@@ -44,7 +44,6 @@ public class UserAction {
     }
     public Message addUser(String username, int type, String name) {
         for (User p : users) {
-            System.out.println(p.getUsername());
             if (p.getUsername().equals(username))
                 return new Message(403, "repeated", null, null);
         }
@@ -53,7 +52,6 @@ public class UserAction {
         Boolean flag = true;
         while (flag) {
             uid = rand.nextInt(100000);
-            System.out.println(uid);
             flag = false;
             for (User p : users)
                 if (p.getUid() == uid) {
@@ -108,13 +106,11 @@ public class UserAction {
         return null;
     }
     public Object getList(JsonObject params) {
-        System.out.println(params);
         
         int page = params.get("page").getAsInt();
         int perPage = params.get("perpage").getAsInt();
         String querys = params.get("query").getAsString();
         querys = querys.substring(0, querys.length());
-        System.out.println(querys);
         String username = "", type = "";
         if (!querys.equals("{}")) {
             JsonParser parse = new JsonParser();
@@ -159,7 +155,7 @@ public class UserAction {
 
     
     //----General Things----
-    private final static String filePath = "./webserver/JSONs/";
+    private final static String filePath = "./webserver/Users/";
     private static String input(String fileName) {
         String res = null;
         try {  

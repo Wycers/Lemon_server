@@ -12,8 +12,6 @@ public class AppointmentAction {
 
     public AppointmentAction() {
         status = JSON.parseArray(input("status.json"));
-        System.out.println(status);
-        
         apps = JSON.parseArray(input("appointments.json"));
         for (int i = 0, len = apps.size(); i < len; ++i) {
             JSONObject p = apps.getJSONObject(i);

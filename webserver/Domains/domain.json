@@ -1,8 +1,1 @@
-[{
-    "content": {
-        "href": "/domain/1",
-        "title": "测试用",
-        "etitle": "test"
-    },
-    "domainId": 1
-}]
+[{"id":1,"href":"/domain/1","title":"测试用","etitle":"test"}]

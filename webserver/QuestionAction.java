@@ -1,16 +1,17 @@
 package webserver;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.alibaba.fastjson.*;
 
 public class QuestionAction {
     private int size = 9999;
-    JSONArray questions = new JSONArray();
+    HashMap<Integer, JSONObject> qidtoq = new HashMap<>();
     public QuestionAction() {
         for (int i = 10000; i <= size; ++i)
-            questions.add(JSON.parseObject(input(i + ".json")));    
+            qidtoq.put(i, JSON.parseObject(input(i + ".json")));
     }
  
     public int createQuestion(String title, String body) {
@@ -18,10 +19,26 @@ public class QuestionAction {
         JSONObject obj = new JSONObject();
         obj.put("title", title);
         obj.put("body", body);
+        qidtoq.put(size, obj);
+
         output(obj.toString(), size + ".json");
         return size;
     } 
+
+    public void setQuestion(String title, String body, int qid) {
+        JSONObject obj = new JSONObject();
+        obj.put("title", title);
+        obj.put("body", body);
+        qidtoq.put(size, obj);
+
+        output(obj.toString(), qid + ".json");
+    }
     
+    public JSONObject getQuestion(int qid) {
+        if (qidtoq.get(qid) == null) 
+            return new JSONObject();
+        return qidtoq.get(qid);
+    }
 
     // ================
     private final static String filePath = "./webserver/Questions/";

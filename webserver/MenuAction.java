@@ -61,7 +61,6 @@ public class MenuAction {
             for (int i = 0, len = json.size(); i < len; i++) {
                 JSONObject temp = json.getJSONObject(i);
                 String title = temp.getString("title");
-                System.out.println(title);
                 if (title == null) 
                     continue; 
                 if (title.equals("Domain")) {
