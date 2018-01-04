@@ -1,0 +1,31 @@
+{
+    "model": {},
+    "fields": {
+        "name": {
+            "label": "Name"
+        },
+        "avatar": {
+            "label": "Avatar",
+            "type": "image"
+        },
+        "type": {
+            "label": "Type",
+            "type": "select",
+            "choices": [
+                {
+                    "text": "administrator",
+                    "value": 0
+                },
+                {
+                    "text": "teacher",
+                    "value": 1
+                },
+                {
+                    "text": "student",
+                    "value": 2
+                }
+            ],
+            "disabled": true
+        }
+    }
+}

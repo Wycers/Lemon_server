@@ -1,18 +1,66 @@
 {
     "uid": 233,
     "scores": {
+        "4": [{
+            "score": "5",
+            "fullscore": "10",
+            "title": "Quiz 1",
+            "note": "QwQ"
+        }, {
+            "score": "4",
+            "fullscore": "10",
+            "title": "Quiz 2",
+            "note": "QwQ"
+        }, {
+            "score": "3",
+            "fullscore": "10",
+            "title": "Quiz 3",
+            "note": "QwQ"
+        }],
         "1": [{
-            "score": "8",
+            "score": "5",
             "fullscore": "10",
             "title": "Chapter 1",
             "note": "QwQ"
-        },{
-            "score": "8",
+        }, {
+            "score": "6",
             "fullscore": "10",
             "title": "Chapter 2",
             "note": "QwQ"
-        },{
-            "score": "8",
+        }, {
+            "score": "7",
+            "fullscore": "10",
+            "title": "Chapter 3",
+            "note": "QwQ"
+        }],
+        "2": [{
+            "score": "5",
+            "fullscore": "10",
+            "title": "Chapter 1",
+            "note": "QwQ"
+        }, {
+            "score": "6",
+            "fullscore": "10",
+            "title": "Chapter 2",
+            "note": "QwQ"
+        }, {
+            "score": "7",
+            "fullscore": "10",
+            "title": "Chapter 3",
+            "note": "QwQ"
+        }],
+        "3": [{
+            "score": "5",
+            "fullscore": "10",
+            "title": "Chapter 1",
+            "note": "QwQ"
+        }, {
+            "score": "6",
+            "fullscore": "10",
+            "title": "Chapter 2",
+            "note": "QwQ"
+        }, {
+            "score": "7",
             "fullscore": "10",
             "title": "Chapter 3",
             "note": "QwQ"

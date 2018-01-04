@@ -38,11 +38,12 @@ public class AppointmentAction {
         JSONArray res = new JSONArray();
         for (int i = 0, len = origin.size(); i < len; ++i) {
             JSONObject now = origin.getJSONObject(i);
-            JSONObject tmp = (JSONObject)status.getJSONObject(now.getInteger("status")).clone();
+            JSONObject tmp = (JSONObject) status.getJSONObject(now.getInteger("status")).clone();
             tmp.put("s", ua.getUserInfo(now.getInteger("suid")));
             tmp.put("t", ua.getUserInfo(now.getInteger("tuid")));
             tmp.put("b", ba.getBlockInfo(now.getInteger("bid")));
             tmp.put("aid", now.getInteger("aid"));
+            tmp.put("qid", now.getInteger("qid"));
             res.add(tmp);
         }
         return res;
@@ -55,6 +56,7 @@ public class AppointmentAction {
         obj.put("suid", uid);
         obj.put("tuid", tid);
         obj.put("bid", blockid);
+        obj.put("qid", qid);
         apps.add(obj);
 
         JSONArray temp = uidtoapp.get(uid);
@@ -71,7 +73,7 @@ public class AppointmentAction {
 
         output(apps.toString(), "appointments.json");
         return new Message(200, "ok", null, null);
-    } 
+    }
 
     public String cancelAppointment(BlockAction ba, int aid) {
         for (int i = 0, len = apps.size(); i < len; ++i) {
@@ -84,7 +86,7 @@ public class AppointmentAction {
         }
         return "failed";
     }
-    
+
     public void del(JSONArray tmp, String key, int value) {
         for (int i = 0, len = tmp.size(); i < len; ++i) {
             JSONObject now = tmp.getJSONObject(i);
@@ -94,7 +96,8 @@ public class AppointmentAction {
             }
         }
     }
-    public String delAppointment(int aid) { 
+
+    public String delAppointment(int aid) {
         for (int i = 0, len = apps.size(); i < len; ++i) {
             JSONObject now = apps.getJSONObject(i);
             if (now.getInteger("aid") == aid) {
@@ -106,7 +109,7 @@ public class AppointmentAction {
         }
         return "failed";
     }
-    
+
     public String confirmAppointment(int aid) {
         for (int i = 0, len = apps.size(); i < len; ++i) {
             JSONObject now = apps.getJSONObject(i);
@@ -120,26 +123,28 @@ public class AppointmentAction {
 
     // ================
     private final static String filePath = "./webserver/Appointments/";
+
     private static String input(String fileName) {
         String res = null;
-        try {  
+        try {
             FileInputStream in = new FileInputStream(filePath + fileName);
-            byte bs[] = new byte[in.available()];  
+            byte bs[] = new byte[in.available()];
             in.read(bs);
             res = new String(bs);
-            in.close();  
-        } catch (Exception e) {  
-            e.printStackTrace();  
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return res;
     }
-    public static void output(String str, String fileName) {  
-        try {  
+
+    public static void output(String str, String fileName) {
+        try {
             FileOutputStream out = new FileOutputStream(filePath + fileName);
-            out.write(str.getBytes());  
-            out.close();  
-        } catch (Exception e) {  
-            e.printStackTrace();  
+            out.write(str.getBytes());
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }  
+    }
 }

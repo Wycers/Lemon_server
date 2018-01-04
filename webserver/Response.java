@@ -35,8 +35,10 @@ public class Response {
                     if (this.path.endsWith("js"))
                         str = "HTTP/2.0 200 OK \r\n" + "Content-Type: application/javascript\r\n" + "\r\n";
                     if (this.path.endsWith("css"))
-                        str = "HTTP/2.0 200 OK \r\n" + "Content-Type: text/css\r\n" + "\r\n" ;
+                        str = "HTTP/2.0 200 OK \r\n" + "Content-Type: text/css\r\n" + "\r\n";
                     if (this.path.endsWith("jpg"))
+                        str = "HTTP/2.0 200 OK \r\n\r\n";
+                    if (this.path.endsWith("ico"))
                         str = "HTTP/2.0 200 OK \r\n\r\n";
                     output.write(str.getBytes());
                     ch = fis.read(buffer);
@@ -51,11 +53,15 @@ public class Response {
                 }
             }
         if (this.type.equals("GET")) {
-            str = "HTTP/2.0 200 OK\r\n Content-Type: application/json;charset=utf-8\r\n\r\n" + this.content + "\r\n"; 
+            str = "HTTP/2.0 200 OK\r\n Content-Type: application/json;charset=utf-8\r\n\r\n" + this.content + "\r\n";
             output.write(str.getBytes());
         }
         if (this.type.equals("POST")) {
             str = this.content;
+            output.write(str.getBytes());
+        }
+        if (this.type.equals("OPTIONS")) {
+            str = "HTTP/2.0 200 OK \r\n" + "Allow: POST\r\n" + "\r\n";
             output.write(str.getBytes());
         }
         output.close();

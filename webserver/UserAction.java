@@ -101,7 +101,7 @@ public class UserAction {
     public item getUser(int uid) {
         for (User p : users) {
             if (p.getUid() == uid)
-                return new item(p.getUid(), p.getType(), p.getUsername(), p.getName());
+                return new item(p);
         }
         return null;
     }
@@ -126,7 +126,7 @@ public class UserAction {
             if (!type.isEmpty()) 
                 if (!type.equals("3") && Integer.parseInt(type) != p.getType())
                     continue;
-            list.add(new item(p.getUid(), p.getType(), p.getUsername(), p.getName()));
+            list.add(new item(p));
         }
         int offset = (page - 1) * perPage;
         ArrayList<item> res = new ArrayList<item>();
@@ -134,6 +134,7 @@ public class UserAction {
             res.add(list.get(i));
         return new Result(page, (int)Math.ceil(list.size() / perPage), perPage, list.size(), res);
     }
+    
     public JSONArray getScore(int uid, int domainid) {
         JSONObject usr = JSON.parseObject(input(uid + ".json"));
         usr = usr.getJSONObject("scores");

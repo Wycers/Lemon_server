@@ -1,21 +1,17 @@
 {
     "administrator": [{
-        "uid": 450,
-        "name": "李景治",
-        "type": "lecturer"
+        "uid": 98765,
+        "name": "花永霞",
+        "type": "administrator"
     }],
     "assistant": [{
-        "uid": 23123,
-        "name": "万谦",
-        "type": "assistant"
-    }, {
-        "uid": 45321,
-        "name": "何曜君",
+        "uid": 65423,
+        "name": "朱砚舟",
         "type": "assistant"
     }],
     "lecturer": [{
-        "uid": 450,
-        "name": "李景治",
+        "uid": 98765,
+        "name": "花永霞",
         "type": "lecturer"
     }],
     "students": [{

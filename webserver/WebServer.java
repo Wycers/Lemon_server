@@ -22,7 +22,7 @@ public class WebServer {
      */
     public static void main(String[] args) {
         ServerSocket server = null;
-        Router router = new Router(); 
+        Router router = new Router();
         Gson gson = new Gson();
         Socket s = null;
         try {
@@ -42,10 +42,9 @@ public class WebServer {
                 request.prework();
                 String path = request.getPath();
                 JsonObject params = request.getParams();
-                String cookie = request.getCookie();
-                
+
                 //处理请求信息
-                router.setArgs(path, params, cookie); 
+                router.setArgs(path, params);
                 router.route();
                 String type = router.getType();
                 String newPath = router.getPath();

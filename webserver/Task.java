@@ -1,7 +1,7 @@
 package webserver;
 public class Task {
     private int id;
-    private String item, eitem, content, ddl, color;
+    private String item, eitem, content, ddl, color, img;
     Task() {}
     /**
      * @param id the id to set
@@ -74,5 +74,17 @@ public class Task {
      */
     public String getEitem() {
         return eitem;
+    }
+    /**
+     * @return the img
+     */
+    public String getImg() {
+        return img;
+    }
+    /**
+     * @param img the img to set
+     */
+    public void setImg(String img) {
+        this.img = img;
     }
 }

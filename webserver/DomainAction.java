@@ -210,7 +210,7 @@ public class DomainAction {
         JSONArray tmp = uid2domain.get(uid);
         if (tmp != null)
             res = (JSONArray)tmp.clone();
-        res.add(JSON.parseObject("{\"href\": \"/domain/create\", \"title\": \"create domain\"}"));
+        res.add(JSON.parseObject("{\"href\": \"/domain/create\", \"title\": \"创建域\", \"etitle\": \"create domain\"}"));
         return res;
     }
     //----General Things----

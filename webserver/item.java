@@ -1,7 +1,14 @@
 package webserver;
 public class item {
     private int uid, type;
-    private String username, name;
+    private String username, name, avatar;
+    item(int uid, int type, String username, String name, String avatar) {
+        this.uid = uid;
+        this.type = type;
+        this.username = username;
+        this.name = name;
+        this.avatar = avatar;
+    }
     item(int uid, int type, String username, String name) {
         this.uid = uid;
         this.type = type;
@@ -13,17 +20,36 @@ public class item {
         this.type = p.getType();
         this.username = p.getUsername();
         this.name = p.getName();
+        this.avatar = p.getAvatar();
     }
-    public int getUid() {
-        return this.uid;
-    }
-    public int getType() {
-        return this.type;
-    }
-    public String getUsername() {
-        return this.username;
-    }
+    /**
+     * @return the name
+     */
     public String getName() {
-        return this.name;
+        return name;
+    }
+    /**
+     * @return the type
+     */
+    public int getType() {
+        return type;
+    }
+    /**
+     * @return the uid
+     */
+    public int getUid() {
+        return uid;
+    }
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+    /**
+     * @return the avatar
+     */
+    public String getAvatar() {
+        return avatar;
     }
 }

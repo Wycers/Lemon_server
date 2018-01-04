@@ -20,14 +20,10 @@ public class MenuAction {
     Gson gson = new Gson();
     JSONArray teacher, student, admin, appointment;
     MenuAction() {
-        /*JsonParser parse = new JsonParser();
-        //this.admin = (JsonArray) parse.parse(input("menu_admin.js"));
-        this.teacher = (JsonArray) parse.parse(input("menu_teacher.js"));
-        this.student = (JsonArray) parse.parse(input("menu_student.js"));
-        */
         this.student = JSON.parseArray(input("menu_student.json"));
         this.teacher = JSON.parseArray(input("menu_teacher.json"));
         this.admin = JSON.parseArray(input("menu_admin.json"));
+
         this.appointment = JSON.parseArray(input("menu_appointment.json"));
     }
 
@@ -37,6 +33,7 @@ public class MenuAction {
             return this.appointment;
         return null;
     }
+
     public JSONArray getMenu(JSONArray domain, int type) {
         if (type == 4) 
             return this.appointment;
@@ -50,7 +47,7 @@ public class MenuAction {
                 if (title == null) 
                     continue; 
                 if (title.equals("Domain")) {
-                    temp.put("items", domain);
+                    temp.put("items", domain); //将“items”字段对应的内容改为domain
                     json.set(i, temp);
                 }
             }
