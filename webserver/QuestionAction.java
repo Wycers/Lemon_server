@@ -13,7 +13,6 @@ public class QuestionAction {
     public QuestionAction() {
         File file = new File("./webserver/Questions");
         size = file.list().length;
-        System.out.println(size);
         for (int i = 10000; i <= 9999 + size; ++i)
             qidtoq.put(i, JSON.parseObject(input(i + ".json")));
         size += 9999;

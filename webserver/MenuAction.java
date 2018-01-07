@@ -6,24 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
 import com.alibaba.fastjson.*;
 
 // 用于处理请求。
 public class MenuAction {
     // Basic Things
-    Gson gson = new Gson();
     JSONArray teacher, student, admin, appointment;
     MenuAction() {
         this.student = JSON.parseArray(input("menu_student.json"));
         this.teacher = JSON.parseArray(input("menu_teacher.json"));
         this.admin = JSON.parseArray(input("menu_admin.json"));
-
         this.appointment = JSON.parseArray(input("menu_appointment.json"));
     }
 

@@ -16,7 +16,6 @@ public class Token {
     public String getToken (String username, int uid) {
         String token = worker.getMD5(username + uid + System.currentTimeMillis());
         hashMap.put(token, uid);
-        System.out.println(token + ":" + uid);
         return token;
     }
 } 

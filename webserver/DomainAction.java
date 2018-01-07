@@ -43,7 +43,6 @@ public class DomainAction {
                     temp.remove(j);
                     break;
                 }
-            System.out.println(temp);
         }
     }
 

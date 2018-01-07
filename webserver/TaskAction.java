@@ -5,21 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-
 import com.alibaba.fastjson.*;
 
 // 用于处理请求。
 public class TaskAction {
     // Basic Things
     ArrayList<Task> tasks = null;
-    Gson gson = new Gson();
     TaskAction() {
         tasks = new ArrayList<Task>();
     }

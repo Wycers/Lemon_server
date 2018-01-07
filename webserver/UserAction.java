@@ -8,31 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.math.*;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-
 import com.alibaba.fastjson.*;
 
 // 用于处理请求。
 public class UserAction {
     // Basic Things
-    ArrayList<User> users = null;
-    Gson gson = new Gson();
+    List<User> users = null;
     UserAction() {
-        Gson gs = new Gson();
-        users = gs.fromJson(input("user.json"), new TypeToken<ArrayList<User>>(){}.getType());
+        users = JSON.parseArray(input("user.json"), User.class);
     }
     
     //Particular Things
-    public Message verify(Token token, JsonObject params) {
+    public Message verify(Token token, JSONObject params) {
         Message res = new Message(403, "invalid", null, null);
-        String username = params.get("username").getAsString();
-        String password = params.get("password").getAsString();
+        String username = params.getString("username");
+        String password = params.getString("password");
         for (User p : users) {
             if (p.getUsername().equals(username)) {
                 if (p.getPassword().equals(password))
@@ -60,8 +50,7 @@ public class UserAction {
                 }
         }
         this.users.add(new User(uid, username, name, "123456", type));
-        System.out.println(uid);
-        output(gson.toJson(this.users), "user.json");
+        output(JSON.toJSONString(this.users), "user.json");
         return null;
     }
 
@@ -75,12 +64,11 @@ public class UserAction {
 
     public Message queryUser(int uid) {
         Message res = new Message(403, "this user doesn't exist.", null, null);
-        for (User p : users) {
+        for (User p : users) 
             if (p.getUid() == uid) {
                 res = new Message(200, null, new item(p), null);
                 break;
             }
-        }
         return res;
     }
 
@@ -105,18 +93,16 @@ public class UserAction {
         }
         return null;
     }
-    public Object getList(JsonObject params) {
-        
-        int page = params.get("page").getAsInt();
-        int perPage = params.get("perpage").getAsInt();
-        String querys = params.get("query").getAsString();
+    public Object getList(JSONObject params) {
+        int page = params.getInteger("page");
+        int perPage = params.getInteger("perpage");
+        String querys = params.getString("query");
         querys = querys.substring(0, querys.length());
         String username = "", type = "";
         if (!querys.equals("{}")) {
-            JsonParser parse = new JsonParser();
-            JsonObject query = (JsonObject) parse.parse(querys);
-            username = query.get("username").getAsString();
-            type = query.get("type").getAsString();
+            JSONObject query = JSON.parseObject(querys);
+            username = query.getString("username");
+            type = query.getString("type");
         }
         
         ArrayList<item> list = new ArrayList<item>();

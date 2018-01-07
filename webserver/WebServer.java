@@ -3,13 +3,7 @@ package webserver;
 import java.io.*;
 import java.net.*;
 import java.lang.*;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
+import com.alibaba.fastjson.*;
 
 public class WebServer {
     /**
@@ -23,7 +17,6 @@ public class WebServer {
     public static void main(String[] args) {
         ServerSocket server = null;
         Router router = new Router();
-        Gson gson = new Gson();
         Socket s = null;
         try {
             server = new ServerSocket(8080, 3, InetAddress.getByName("127.0.0.1"));
@@ -41,7 +34,7 @@ public class WebServer {
                 Request request = new Request(input, output);
                 request.prework();
                 String path = request.getPath();
-                JsonObject params = request.getParams();
+                JSONObject params = request.getParams();
 
                 //处理请求信息
                 router.setArgs(path, params);
@@ -52,7 +45,7 @@ public class WebServer {
 
                 System.out.println(path);
                 //响应请求信息
-                Response response = new Response(output, type, newPath, gson.toJson(content));
+                Response response = new Response(output, type, newPath, JSON.toJSONString(content));
                 response.response();
 
             } catch (Exception e) {

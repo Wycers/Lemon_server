@@ -4,13 +4,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.OutputStream;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
+import com.alibaba.fastjson.*;
 
 public class Request {
     /*
@@ -102,7 +96,6 @@ public class Request {
         this.content = this.content.replaceAll("%7D", "}");
         this.action = getBetween(this.content, "", " ");
 
-        // System.out.println(this.content);
         /*System.out.println(this.content);
         if (this.action.equals("POST")) {
             String str = "HTTP/2.0 200 OK \r\n" + "\r\n";
@@ -153,7 +146,7 @@ public class Request {
         return fileName;
     }
 
-    public JsonObject getParams() throws IOException {
+    public JSONObject getParams() throws IOException {
         if (this.content == null)
             return null;
         if (this.getPath().equals("/api/upload")) {
@@ -161,21 +154,19 @@ public class Request {
             return null;
         }
         String res = null;
-        Gson gson = new Gson();
         if (this.action.equals("GET")) {
             String str = getBetween(this.content, " ", " ");
 
             String strRequestKeyAndValues = "";
             Map<String, String> mapRequest = URLRequest(str);
-            res = gson.toJson(mapRequest);
+            res = JSON.toJSONString(mapRequest);
         } else {
             String str = getBetween(this.content + "\n", "{", "}\n");
             if (str == null)
                 return null;
             res = "{" + str + "}";
         }
-        JsonParser parse = new JsonParser();
-        return (JsonObject) parse.parse(res);
+        return JSON.parseObject(res);
     }
 
     public String getPath() {
