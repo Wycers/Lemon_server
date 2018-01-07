@@ -87,7 +87,7 @@ public class Request {
                 i = -1;
             }
             if (0 < i)
-                request.append(new String(buffer, 0, i, "ISO-8859-1"));
+                request.append(new String(buffer, 0, i, "UTF-8"));
         } while (i >= 128 * 1024);
         this.content = request.toString();
 
@@ -136,7 +136,7 @@ public class Request {
                 if (!newFile.delete())// 删除成功则创建      
                     System.err.println("删除文件" + newFile + "失败");
             if (newFile.createNewFile())
-                gg("./static/" + fileName, res.getBytes("ISO-8859-1"));
+                gg("./static/" + fileName, res.getBytes("UTF-8"));
             else {
                 System.err.println("创建文件：" + newFile + "失败");
             }

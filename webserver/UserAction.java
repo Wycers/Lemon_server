@@ -72,17 +72,7 @@ public class UserAction {
         return res;
     }
 
-    public class Result {
-        int currentPage, lastPage, perPage, total;
-        Object data;
-        Result(int cPage, int lPage, int pPage, int total, Object data) {
-            this.currentPage = cPage;
-            this.lastPage = lPage;
-            this.perPage = pPage;
-            this.total = total;
-            this.data = data;
-        }
-    }
+    
     private static int min(int a, int b) {
         return a < b ? a : b;
     }

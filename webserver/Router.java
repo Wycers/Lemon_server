@@ -13,9 +13,9 @@ public class Router {
     private Object content = null;
     //workers
     private UserAction ua = null;
-    private Token ta = null;
+    private Token token = null;
     private MenuAction ma = null;
-    private TaskAction taska = null;
+    private TaskAction ta = null;
     private GridAction ga = null;
     private FormAction fa = null;
     private DomainAction da = null;
@@ -25,9 +25,9 @@ public class Router {
 
     Router() {
         ua = new UserAction();
-        ta = new Token();
+        token = new Token();
         ma = new MenuAction();
-        taska = new TaskAction();
+        ta = new TaskAction();
         ga = new GridAction();
         fa = new FormAction();
         da = new DomainAction();
@@ -53,19 +53,19 @@ public class Router {
         if (this.path.equals("/api/tasks")) {
             this.type = "GET";
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
-            this.content = taska.getTasks(da, uid);
+            int uid = this.token.getUser(token);
+            this.content = ta.getTasks(da, uid);
         }
 
         if (this.path.equals("/api/login")) {
             this.type = "POST";
-            this.content = ua.verify(this.ta, this.params);
+            this.content = ua.verify(this.token, this.params);
         }
 
         if (this.path.equals("/api/menu")) {
             this.type = "GET";
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int type = this.ua.getType(uid);
             this.content = ma.getMenu(this.da.getDomains(uid), type);
         }
@@ -73,7 +73,7 @@ public class Router {
         if (this.path.equals("/api/users/grid")) {
             this.type = "GET";
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int type = this.ua.getType(uid);
             if (type == 0) {
                 this.content = ga.getGrid("users");
@@ -84,7 +84,7 @@ public class Router {
             this.type = "GET";
             String token = params.getString("token");
             int toEdit = params.getInteger("id");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int type = this.ua.getType(uid);
             //if (type == 0) {
             this.content = fa.getForms(this.ua, "users:modify", toEdit);
@@ -94,7 +94,7 @@ public class Router {
         if (this.path.equals("/api/users/form/create")) {
             this.type = "GET";
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int type = this.ua.getType(uid);
             if (type == 0) {
                 this.content = fa.getForms("users:create");
@@ -103,7 +103,7 @@ public class Router {
         if (this.path.equals("/api/users")) {
             this.type = "GET";
             /*String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int type = this.ua.getType(uid);
             if (type == 0) {
                 this.content = fa.getForms("users");
@@ -121,23 +121,22 @@ public class Router {
         if (this.path.equals("/api/domain/grid")) {
             this.type = "GET";
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int type = this.ua.getType(uid);
             this.content = ga.getGrid("domain");
         }
         if (this.path.equals("/api/domain/get")) {
             this.type = "GET";
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int type = this.ua.getType(uid);
-            System.out.println(params);
             int did = params.getInteger("domainid");
             this.content = da.getDomain(did);
         }
         if (this.path.equals("/api/domain/form/add")) {
             this.type = "GET";
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int type = this.ua.getType(uid);
             this.content = ga.getGrid("domainAdd");
         }
@@ -156,7 +155,7 @@ public class Router {
                 return;
             if (etitle == null)
                 return;
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int type = this.ua.getType(uid);
             JSONArray users = params_.getJSONArray("users");
             this.content = da.addDomain(title, etitle, users);
@@ -171,7 +170,7 @@ public class Router {
                 return;
             if (etitle == null)
                 return;
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int type = this.ua.getType(uid);
             int domainid = params_.getInteger("domainid");
             JSONArray users = params_.getJSONArray("users");
@@ -185,9 +184,8 @@ public class Router {
         }
         if (this.path.equals("/api/score")) {
             this.type = "GET";
-            System.out.println(params);
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int did = params.getInteger("id");
             this.content = ua.getScore(uid, did);
         }
@@ -195,7 +193,7 @@ public class Router {
             this.type = "GET";
             System.out.println(params);
             //String token = params.getString("token");
-            //int uid = this.ta.getUser(token);
+            //int uid = this.token.getUser(token);
             this.content = fa.getForms("appointment");
         }
         if (this.path.equals("/api/user")) {
@@ -214,7 +212,7 @@ public class Router {
             this.type = "POST";
             System.out.println(params);
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             try {
                 int blockid = this.params.getInteger("select");
             } catch (Exception e) {
@@ -238,20 +236,20 @@ public class Router {
         if (this.path.equals("/api/appointment/query")) {
             this.type = "GET";
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             this.content = aa.getAppointment(ua, ba, uid);
         }
         if (this.path.equals("/api/appointment/cancel")) {
             this.type = "GET";
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int aid = params.getInteger("aid");
             this.content = aa.cancelAppointment(ba, aid);
         }
         if (this.path.equals("/api/appointment/confirm")) {
             this.type = "GET";
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int aid = params.getInteger("aid");
             this.content = aa.confirmAppointment(aid);
         }
@@ -263,7 +261,7 @@ public class Router {
         if (this.path.equals("/api/appointment/del")) {
             this.type = "GET";
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int aid = params.getInteger("aid");
             this.content = aa.delAppointment(aid);
         }
@@ -275,7 +273,7 @@ public class Router {
         if (this.path.equals("/api/question/get")) {
             this.type = "GET";
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             int qid = params.getInteger("qid");
             this.content = qa.getQuestion(qid);
         }
@@ -285,7 +283,7 @@ public class Router {
         if (this.path.equals("/api/settings/form")) {
             this.type = "GET";
             String token = params.getString("token");
-            int uid = this.ta.getUser(token);
+            int uid = this.token.getUser(token);
             this.content = fa.getForms(ua, "settings", uid);
         }
         if (this.path.equals("/api/upload")) {
